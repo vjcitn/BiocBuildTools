@@ -1,0 +1,11 @@
+pandoc: '2.5'
+pkgdown: 1.6.1.9000
+pkgdown_sha: 6094ac3dd80a1f3f1d4e2f47d0ed4716d51362b0
+articles:
+  cicd1: cicd1.html
+  gcp: gcp.html
+last_built: 2021-01-07T01:23Z
+urls:
+  reference: https://vjcitn.github.io/BiocBuildTools/reference
+  article: https://vjcitn.github.io/BiocBuildTools/articles
+
