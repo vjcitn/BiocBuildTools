@@ -216,7 +216,12 @@ deferred.
 
 Here is a screen shot of the `browse_checks` app in BiocBuildTools
 
-<img src="early.png"/>
+<img src="geoq.png"/>
+
+We use pkgnet to generate network statistics and displays related
+to package and function dependencies.
+
+<img src="geoqnet.png"/>
 
 TO DO: 
 
