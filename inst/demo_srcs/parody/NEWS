@@ -1,0 +1,5 @@
+CHANGES IN VERSION 1.9.1
+------------------------
+
+Jerry Lewis of Biogen Idec improved the skesd implementation to eliminate unnecessary sorts.
+

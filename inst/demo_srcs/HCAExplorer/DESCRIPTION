@@ -1,0 +1,55 @@
+Package: HCAExplorer
+Type: Package
+Title: Browse the Human Cell Atlas data portal
+Version: 1.5.0
+Authors@R: c(
+    person(
+        "Daniel", "Van Twisk",
+        email = "Daniel.VanTwisk@RoswellPark.org",
+        role = "aut"
+    ),
+    person(
+        "Martin", "Morgan",
+        email = "Martin.Morgan@RoswellPark.org",
+        role = "aut"
+    ),
+    person(
+        "Bioconductor Package", "Maintainer",
+        email = "maintainer@bioconductor.org",
+        role = "cre"
+    ))
+Description: Search, browse, reference, and download resources from
+    the Human Cell Atlas data portal. Development of this package is
+    supported through funds from the Chan / Zuckerberg initiative.
+Depends: R (>= 3.6.0),
+         dplyr
+Imports: BiocFileCache,
+         HCAMatrixBrowser,
+         S4Vectors,
+         LoomExperiment,
+         vctrs,
+         curl,
+         httr,
+         jsonlite,
+         methods,
+         plyr,
+         readr,
+         rlang,
+         tibble,
+         tidygraph,
+         utils,
+         xml2
+Suggests: 
+    BiocStyle,
+    knitr,
+    rmarkdown,
+    testthat (>= 2.1.0)
+License: Artistic-2.0
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/Bioconductor/HCABrowser
+RoxygenNote: 7.1.0
+biocViews: DataImport, Sequencing
+BugReports:
+    https://github.com/Bioconductor/HCABrowser/issues
+VignetteBuilder: knitr

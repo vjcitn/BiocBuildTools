@@ -1,0 +1,47 @@
+Package: BiocBuildTools
+Title: Bioconductor software ecosystem building tools
+Version: 0.0.15
+Authors@R: 
+    person(given = "Vincent",
+           family = "Carey",
+           role = c("aut", "cre"),
+           email = "stvjc@channing.harvard.edu",
+           comment = c(ORCID = "your-orc-id-here"))
+Description: This package includes software and documentation related to
+    creation and management of the Bioconductor software ecosystem.
+    A pkgdown website and docker image are generated based on workflow 
+    settings, to help interested developers explore aspects of
+    software ecosystem definition and evolution.  This project was funded
+    in part in the Chan-Zuckerberg Initiative Essential Open Source
+    Software program, SVCF Grant 183436.
+License: Artistic-2.0
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Depends: R (>= 4.1.0)
+Suggests: 
+    knitr,
+    rmarkdown,
+    rcmdcheck,
+    pkgdown,
+    testthat,
+    BiocStyle,
+    igraph,
+    magrittr,
+    dplyr
+Imports: 
+    BiocPkgTools,
+    pkgbuild,
+    methods,
+    BiocManager,
+    devtools,
+    RSQLite,
+    shiny,
+    pkgnet, 
+    utils
+URL: https://vjcitn.github.io/BiocBuildTools/
+BugReports: https://github.com/vjcitn/BiocBuildTools/issues/new/choose
+VignetteBuilder: knitr
+DockerImage: vjcitn/biocbuildtools:latest
+BiocViews: Infrastructure, Software
