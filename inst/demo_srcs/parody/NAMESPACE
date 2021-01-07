@@ -1,0 +1,8 @@
+import(tools)
+
+export(calout.detect, mv.calout.detect, hamp.scale.3,
+ tukeyor, box.scale)
+
+importFrom("stats", "mahalanobis", "median", "plogis", "qbeta",
+             "qnorm", "qt", "var")
+

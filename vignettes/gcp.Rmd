@@ -1,0 +1,126 @@
+---
+title: "Binary package production for GCP/AnVIL"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Binary package production for GCP/AnVIL"}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+```{r setup,echo=FALSE,results="hide"}
+suppressMessages({
+suppressPackageStartupMessages({
+library(BiocStyle)
+library(BiocBuildTools)
+library(BiocPkgTools)
+library(igraph)
+library(dplyr)
+library(magrittr)
+})
+})
+```
+
+# Basic concepts
+
+When R is used within a Docker container, users may confront
+the need to install additional packages.  This can be time-consuming
+when compilation is required.  To solve this, we have created
+a repository of container-based binary packages.  Installing
+these during R sessions is fast and only involves file transfer.
+
+# A container for use with NHGRI AnVIL
+
+We will use the workspace
+
+```
+https://app.terra.bio/#workspaces/landmarkanvil2/biocbinaries_apr2020
+```
+
+to run a custom environment with 64 CPU, 240 GB RAM, and 300 GB disk.
+
+We use the runtime container 
+
+```
+us.gcr.io/anvil-gcr-public/anvil-rstudio-bioconductor:0.0.4
+```
+
+# The manifest for Bioconductor 3.10 software packages
+
+We use the following function to generate a character
+vector with names of all software packages in a given
+release.
+```{r getman}
+get_bioc_packagelist = function(rel = "RELEASE_3_10") {
+ system("git clone git@git.bioconductor.org:admin/manifest")
+ owd = getwd()
+ setwd("manifest")
+ on.exit(setwd(owd))
+ system(paste("git checkout ", rel))
+ proc_software.txt = function() {
+  x = readLines("software.txt")[-1]  # first line is comment
+  nn = which(nchar(x)==0)
+  tmp = x[-nn]
+  gsub("Package: ", "", tmp)
+ }
+ proc_software.txt()
+}
+```
+We'll generate the vector of package names and copy it
+to a google bucket for retrieval in our AnVIL session.
+
+```{r gepks,eval=FALSE}
+software_3.10_2020_04_28 = get_bioc_packagelist()
+save(software_3.10_2020_04_28, file="software_3.10_2020_04_28.rda")
+system("gsutil cp software_3.10_2020_04_28.rda gs://biocbbs_2020a")
+```
+
+We will use this vector as input to `BiocManager::install` with
+Ncpus = 45.
+
+# Tasks within AnVIL
+
+We set up the runtime based on
+```
+us.gcr.io/anvil-gcr-public/anvil-rstudio-bioconductor:0.0.4
+```
+
+In Rstudio, we retrieve the vector of package names.
+
+```
+R version 3.6.1 (2019-07-05) -- "Action of the Toes"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> getwd()
+[1] "/home/rstudio"
+> system("gsutil cp gs://biocbbs_2020a/software_3.10_2020_04_28.rda .")
+Copying gs://biocbbs_2020a/software_3.10_2020_04_28.rda...
+/ [1 files][ 11.6 KiB/ 11.6 KiB]                                                
+Operation completed over 1 objects/11.6 KiB.                                     
+> dir()
+[1] "entrypoint.out"               "kitematic"                    "software_3.10_2020_04_28.rda" "welder.log"                  
+> load("software_3.10_2020_04_28.rda")
+> length(software_3.10_2020_04_28)
+[1] 1823
+```
+
+
+
