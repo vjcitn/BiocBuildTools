@@ -37,12 +37,18 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiocBuildTools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.17</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -85,7 +91,7 @@
       <h1 data-toc-skip>Continuous integration and delivery approaches for Bioconductor</h1>
                         <h4 class="author">Vincent J. Carey, stvjc at channing.harvard.edu</h4>
             
-            <h4 class="date">January 06, 2021</h4>
+            <h4 class="date">April 22, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vjcitn/BiocBuildTools/blob/master/vignettes/cicd1.Rmd"><code>vignettes/cicd1.Rmd</code></a></small>
       <div class="hidden name"><code>cicd1.Rmd</code></div>
@@ -172,80 +178,50 @@ nnote<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/
 <p>R packages declare interdependencies explicitly in the <code>DESCRIPTION</code> file. An example is</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="va">td</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="st">"demo_srcs/HCAExplorer/DESCRIPTION"</span><span class="op">)</span>, sep<span class="op">=</span><span class="st">"\n"</span><span class="op">)</span></code></pre></div>
-<pre><code>## Package: HCAExplorer
-## Type: Package
-## Title: Browse the Human Cell Atlas data portal
-## Version: 1.5.0
-## Authors@R: c(
-##     person(
-##         "Daniel", "Van Twisk",
-##         email = "Daniel.VanTwisk@RoswellPark.org",
-##         role = "aut"
-##     ),
-##     person(
-##         "Martin", "Morgan",
-##         email = "Martin.Morgan@RoswellPark.org",
-##         role = "aut"
-##     ),
-##     person(
-##         "Bioconductor Package", "Maintainer",
-##         email = "maintainer@bioconductor.org",
-##         role = "cre"
-##     ))
-## Description: Search, browse, reference, and download resources from
-##     the Human Cell Atlas data portal. Development of this package is
-##     supported through funds from the Chan / Zuckerberg initiative.
-## Depends: R (&gt;= 3.6.0),
-##          dplyr
-## Imports: BiocFileCache,
-##          HCAMatrixBrowser,
-##          S4Vectors,
-##          LoomExperiment,
-##          vctrs,
-##          curl,
-##          httr,
-##          jsonlite,
-##          methods,
-##          plyr,
-##          readr,
-##          rlang,
-##          tibble,
-##          tidygraph,
-##          utils,
-##          xml2
-## Suggests: 
-##     BiocStyle,
-##     knitr,
-##     rmarkdown,
-##     testthat (&gt;= 2.1.0)
-## License: Artistic-2.0
-## Encoding: UTF-8
-## LazyData: true
-## URL: https://github.com/Bioconductor/HCABrowser
-## RoxygenNote: 7.1.0
-## biocViews: DataImport, Sequencing
-## BugReports:
-##     https://github.com/Bioconductor/HCABrowser/issues
-## VignetteBuilder: knitr</code></pre>
+<span class="va">dcf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/dcf.html">read.dcf</a></span><span class="op">(</span><span class="st">"demo_srcs/HCAExplorer/DESCRIPTION"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">dcf</span><span class="op">[</span>,<span class="st">"Imports"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<pre><code>## BiocFileCache,
+## HCAMatrixBrowser,
+## S4Vectors,
+## LoomExperiment,
+## vctrs,
+## curl,
+## httr,
+## jsonlite,
+## methods,
+## plyr,
+## readr,
+## rlang,
+## tibble,
+## tidygraph,
+## utils,
+## xml2</code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"\n"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="va">curd</span><span class="op">)</span></code></pre></div>
 <p>The fields <code>Depends</code>, <code>Imports</code>, <code>Suggests</code> and <code>LinkingTo</code> define the independently maintained packages that must be available for <em><a href="https://bioconductor.org/packages/3.13/HCAExplorer">HCAExplorer</a></em> to work effectively. Details on these types of dependency are provided in <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html">Writing R Extensions</a>.</p>
 <p>We can visualize the interdependencies of a small collection using <em><a href="https://bioconductor.org/packages/3.13/BiocPkgTools">BiocPkgTools</a></em>.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressMessages</a></span><span class="op">(</span><span class="op">{</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/seandavi/BiocPkgTools">BiocPkgTools</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://vjcitn.github.io/BiocBuildTools/">BiocBuildTools</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
-<span class="va">dd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocPkgTools/man/buildPkgDependencyDataFrame.html">buildPkgDependencyDataFrame</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">dfc</span> <span class="op">=</span> <span class="va">dd</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Package</span> <span class="op">%in%</span> <span class="fu"><a href="../reference/bioc_coreset.html">bioc_coreset</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">dependency</span> <span class="op">%in%</span> <span class="fu"><a href="../reference/bioc_coreset.html">bioc_coreset</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> 
+<span class="va">dd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocPkgTools/man/buildPkgDependencyDataFrame.html">buildPkgDependencyDataFrame</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## 'getOption("repos")' replaces Bioconductor standard repositories, see
+## '?repositories' for details
+## 
+## replacement repositories:
+##     CRAN: https://cloud.r-project.org</code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dfc</span> <span class="op">=</span> <span class="va">dd</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Package</span> <span class="op">%in%</span> <span class="fu"><a href="../reference/bioc_coreset.html">bioc_coreset</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">dependency</span> <span class="op">%in%</span> <span class="fu"><a href="../reference/bioc_coreset.html">bioc_coreset</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> 
 <span class="va">gg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocPkgTools/man/buildPkgDependencyIgraph.html">buildPkgDependencyIgraph</a></span><span class="op">(</span><span class="va">dfc</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span></code></pre></div>
 <p><img src="cicd1_files/figure-html/getg-1.png" width="700"></p>
 <p>Some of the packages in the small set are isolated.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="../reference/bioc_coreset.html">bioc_coreset</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">union</a></span><span class="op">(</span><span class="va">dfc</span><span class="op">$</span><span class="va">Package</span>, <span class="va">dfc</span><span class="op">$</span><span class="va">dependency</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "GEOquery" "parody"</code></pre>
 </div>
@@ -303,7 +279,7 @@ nnote<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

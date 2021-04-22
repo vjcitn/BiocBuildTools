@@ -82,13 +82,19 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiocBuildTools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.17</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -157,14 +163,15 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>ps</span> <span class='op'>=</span> <span class='fu'><a href='PackageSet.html'>PackageSet</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BiocFileCache"</span>, <span class='st'>"ensembldb"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'>#bioc_coreset()[c(3,8)]) # two example packages</span>
-<span class='va'>td</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>'getOption("repos")' replaces Bioconductor standard repositories, see</span>
+#&gt; <span class='message'>'?repositories' for details</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>replacement repositories:</span>
+#&gt; <span class='message'>    CRAN: https://cloud.r-project.org</span></div><div class='input'><span class='va'>td</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>ll</span> <span class='op'>=</span> <span class='fu'>populate_local_gits</span><span class='op'>(</span><span class='va'>ps</span>, <span class='va'>td</span><span class='op'>)</span>
 <span class='va'>ll</span>
-</div><div class='output co'>#&gt; [1] "BiocFileCache"           "callr-env-2755e2127f1e5"
-#&gt; [3] "downlit"                 "ensembldb"              
-#&gt; [5] "file2755e4e8ea803"       "file2755e562636a6.so"   
-#&gt; [7] "file2755e5736f27f"       "file2755e7921642e"      
-#&gt; [9] "parody"                 </div></pre>
+</div><div class='output co'>#&gt; [1] "BiocFileCache"     "downlit"           "ensembldb"        
+#&gt; [4] "file2eaa94f08c396" "file2eaa95bd37736" "parody"           </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -180,7 +187,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
