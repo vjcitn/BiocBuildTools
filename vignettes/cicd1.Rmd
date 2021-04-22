@@ -156,7 +156,9 @@ R packages declare interdependencies explicitly in the `DESCRIPTION`
 file.  An example is
 ```{r lkdesc}
 setwd(td)
-cat(readLines("demo_srcs/HCAExplorer/DESCRIPTION"), sep="\n")
+dcf = read.dcf("demo_srcs/HCAExplorer/DESCRIPTION")
+cat(dcf[,"Imports"])
+cat("\n")
 setwd(curd)
 ```
 The fields `Depends`, `Imports`, `Suggests` and `LinkingTo` define
