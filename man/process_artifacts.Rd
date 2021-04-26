@@ -6,6 +6,7 @@
 \usage{
 process_artifacts(
   dbpath = tempfile(),
+  run_app = TRUE,
   startup = TRUE,
   serialize_pnet = TRUE,
   pnet_obj_name = "pnet.rds"
@@ -13,6 +14,8 @@ process_artifacts(
 }
 \arguments{
 \item{dbpath}{character(1) a SQLite database will be produced here}
+
+\item{run_app}{logical(1) defaults to TRUE; runs \code{browse_checks} on available data}
 
 \item{startup}{logical(1) defaults to TRUE; passed to \code{status_db_init}}
 
@@ -26,4 +29,7 @@ process outputs of tbchecks and get_pnet to run browse_checks
 \note{
 Starts a SQLite connection.  The connection is closed in the call to dbConnect, this
 should be conditioned with an on.exit here in case the connection was not closed.
+If run_app is FALSE, the connection is closed on exit.
+This function will create a SQLite database and list of pkgnet objects for use
+with browse_checks.
 }
