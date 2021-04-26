@@ -17,10 +17,16 @@ process_artifacts = function (dbpath = tempfile(), run_app=TRUE,
     bn = lapply(dir(patt = "bcch"), function(x) gsub("_.*", "", 
         x))
     names(bcc) = unlist(bn)
+#
     ccc = lapply(dir(patt = "_ch"), readRDS)
-    names(ccc) = unlist(bn)
+    cn = lapply(dir(patt= "_ch"), function(x) gsub("_.*", "",
+        x))
+    names(ccc) = unlist(cn)
+#
     ppp = lapply(dir(patt = "_pnet"), readRDS)
-    names(ppp) = unlist(bn)
+    pn = lapply(dir(patt= "_pnet"), function(x) gsub("_.*", "",
+        x))
+    names(ppp) = unlist(pn)
     chkdfs = rcc_to_dataframes(ccc)
     for (i in 1:length(bcc)) bcc[[i]]$package = names(bcc)[i]
     bchkdfs = bcc_to_dataframes(bcc)
