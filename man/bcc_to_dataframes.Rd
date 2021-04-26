@@ -7,7 +7,8 @@
 bcc_to_dataframes(bcclist)
 }
 \arguments{
-\item{bcclist}{list of results of BiocCheck::BiocCheck}
+\item{bcclist}{list of results of BiocCheck::BiocCheck, must be named with names of
+packages as element names}
 }
 \description{
 produce list of data.frames for storage of BiocCheck::BiocCheck results in SQLite

@@ -50,19 +50,23 @@ rcc_to_dataframes = function(rcclist) {
 }
 
 #' produce list of data.frames for storage of BiocCheck::BiocCheck results in SQLite
-#' @param bcclist list of results of BiocCheck::BiocCheck
+#' @param bcclist list of results of BiocCheck::BiocCheck, must be named with names of
+#' packages as element names
 #' @examples
 #' data(demo_bcchk_out)
 #' dfs = bcc_to_dataframes(demo_bcchk_out)
 #' names(dfs)
 #' names(dfs[[1]])
 #' @export
-bcc_to_dataframes = function(bcclist) {
-  pks = sapply(bcclist, "[[", "package")
-  notes_df = make_df_component(bcclist, component="note")
-  err_df = make_df_component(bcclist, component="error")
-  warn_df = make_df_component(bcclist, component="warning")
-  list(basic = data.frame(package=pks, stringsAsFactors=FALSE),
-   notes = notes_df, warnings=warn_df, errors=err_df)
+bcc_to_dataframes = function (bcclist) 
+{
+    nel = length(bcclist)
+    nms = names(bcclist)
+    stopifnot(nel==length(nms))
+    notes_df = make_df_component(bcclist, component = "note")
+    err_df = make_df_component(bcclist, component = "error")
+    warn_df = make_df_component(bcclist, component = "warning")
+    list(basic = data.frame(package = nms, stringsAsFactors = FALSE), 
+        bcnotes = notes_df, bcwarnings = warn_df, bcerrors = err_df)
 }
 

@@ -25,7 +25,6 @@ library(RSQLite)
          tabPanel("BCerr", verbatimTextOutput("bcerror")),
          tabPanel("BCwarn", verbatimTextOutput("bcwarn")),
          tabPanel("BCnote", verbatimTextOutput("bcnotes")),
-         tabPanel("covg", DT::dataTableOutput("testcov")),
 #         tabPanel("pnet", visNetwork::visNetworkOutput("pnet")),
          tabPanel("depnet", DT::dataTableOutput("depwidg"),
           visNetwork::visNetworkOutput("pnet")),

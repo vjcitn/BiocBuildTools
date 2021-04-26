@@ -6,6 +6,7 @@
 status_db_init = function(sqlite_filename, named_df_list, exists_ok=FALSE) {
   if (!exists_ok & file.exists(sqlite_filename)) stop(sqlite_filename, " exists and exists_ok = FALSE")
   con = dbConnect(RSQLite::SQLite(), sqlite_filename)
+  on.exit(dbDisconnect(con))
   nms = names(named_df_list)
   for (i in nms)
     dbWriteTable(con, i, named_df_list[[i]], append=TRUE)

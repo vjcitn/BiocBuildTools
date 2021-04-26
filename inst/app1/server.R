@@ -31,9 +31,9 @@
            tmp = RSQLite::dbGetQuery(con, paste0("select * from bcwarnings where package = '", input$pkchoice, "'"))
            cat(tmp[[2]], sep="\n---\n")
            })
-       output$testcov = DT::renderDataTable({
-           RSQLite::dbGetQuery(con, paste0("select * from covg where package = '", input$pkchoice, "'"))
-           })
+#       output$testcov = DT::renderDataTable({
+#           RSQLite::dbGetQuery(con, paste0("select * from covg where package = '", input$pkchoice, "'"))
+#           })
 
         output$about = renderUI({
           helpText("This app", 
