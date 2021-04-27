@@ -43,17 +43,23 @@
               ) # end ul
              )  # end helpText
            }) 
+        curpnet = reactive({
+           td = tempdir()
+           unzip(pnet_zip, file=paste0(input$pkchoice, ".rds"), exdir=td)
+           readRDS(paste0(td, "/", input$pkchoice, ".rds"))
+           })
+     
         output$pnet = visNetwork::renderVisNetwork({
-           pnet_obj[[input$pkchoice]]$dep$graph_viz  # GLOBAL pnet_obj from app interface function
+           curpnet()$dep$graph_viz  # GLOBAL pnet_obj from app interface function
            })
         output$pnetfun = visNetwork::renderVisNetwork({
-           pnet_obj[[input$pkchoice]]$fun$graph_viz
+           curpnet()$fun$graph_viz
            })
         output$depwidg = htmlwidgets::shinyRenderWidget(
-           pnet_obj[[input$pkchoice]]$dep$get_summary_view(),
+           curpnet()$dep$get_summary_view(),
              DT::dataTableOutput, environment(), FALSE)
         output$funwidg = htmlwidgets::shinyRenderWidget(
-           pnet_obj[[input$pkchoice]]$fun$get_summary_view(),
+           curpnet()$fun$get_summary_view(),
              DT::dataTableOutput, environment(), FALSE)
         observeEvent(input$stopBtn, {
             dbDisconnect(con)

@@ -2,7 +2,7 @@
 #' @import shiny
 #' @importFrom RSQLite dbConnect SQLite SQLITE_RO dbGetQuery dbDisconnect dbReadTable
 #' @param con SQLiteConnection where tables of check results from rcmdcheck, etc., are stored
-#' @param pnet_obj list as created by `make_pnet_obj`
+#' @param pnet_zip character(1) path to a zip file holding pkgnet objects
 #' @note dbDisconnect is run if the stop button is pressed to end shiny session.  If
 #' stopped via ctrl-C or error, the connection may remain and require closure.  N.B.  The
 #' source codes for this app are in inst/app1, to simplify contribution to shinyapps.io.
@@ -14,13 +14,14 @@
 #'  con = RSQLite::dbConnect(RSQLite::SQLite(), 
 #'   system.file("sqlite/demo16.sqlite", package="BiocBuildTools"), flags=RSQLite::SQLITE_RO)
 #'  print(RSQLite::dbListTables(con))
-#'  demo_pnet2 = readRDS(system.file("pkgnet/demo16_pnet.rds", package="BiocBuildTools"))
+#'  #demo_pnet2 = readRDS(system.file("pkgnet/demo16_pnet.rds", package="BiocBuildTools"))
+#'  demo_pnet2 = system.file("pkgnet/demo2.zip", package="BiocBuildTools")
 #'  browse_checks(con, demo_pnet2)
 #' }
 #' @export
-browse_checks = function(con, pnet_obj) {
+browse_checks = function(con, pnet_zip) {
  con <<- con
- pnet_obj <<- pnet_obj
+ pnet_zip <<- pnet_zip
  od = getwd()
  on.exit(setwd(od))
  uif = system.file("app1/ui.R", package="BiocBuildTools")
