@@ -17,7 +17,7 @@ fulfill_deps = function(pkg, depdf = NULL, exclude="KEGG.db", ...) {
  options(timeout=300)
  ii = rownames(installed.packages())
  if (is.null(depdf)) depdf = BiocPkgTools::buildPkgDependencyDataFrame()
- dat = depdf |> dplyr::filter(Package == pkg)
+ dat = dplyr::filter(depdf, Package == pkg)
  must_get = setdiff(dat$dependency, c("R", ii, exclude))
  if (length(must_get)>0) message(paste("running BiocManager::install on", must_get))
  if (length(must_get)>0) BiocManager::install(must_get, ...)
