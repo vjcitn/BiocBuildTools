@@ -2,7 +2,9 @@
 
 This software and pkgdown web site was developed in conjunction with a
 Chan-Zuckerberg Initiative Essential Open Source Software project,
-"Bioconductor Build System", SVCF Grant 183436.
+"Bioconductor Build System", SVCF Grant 183436, and made use of the
+Indiana University Jetstream System through the XSEDE project BIR190004,
+"Package build and distribution system for Bioconductor.org".
 
 ## Objectives
 
