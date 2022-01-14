@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/404.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/articles/cicd1.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/articles/gcp.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/authors.html</loc>
+  </url>
+  <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/index.html</loc>
   </url>
   <url>
@@ -49,7 +64,13 @@
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/full_dep_opts.html</loc>
   </url>
   <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/get_pnet.html</loc>
+  </url>
+  <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/getpk.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/index.html</loc>
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/installed_r.html</loc>
@@ -70,6 +91,9 @@
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/print.BBT_pkgnet.html</loc>
   </url>
   <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/process_artifacts.html</loc>
+  </url>
+  <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/rcc_to_dataframes.html</loc>
   </url>
   <url>
@@ -85,12 +109,9 @@
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/status_db_init.html</loc>
   </url>
   <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/tbcheck.html</loc>
+  </url>
+  <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/update_status_db.html</loc>
-  </url>
-  <url>
-    <loc>https://vjcitn.github.io/BiocBuildTools/articles/cicd1.html</loc>
-  </url>
-  <url>
-    <loc>https://vjcitn.github.io/BiocBuildTools/articles/gcp.html</loc>
   </url>
 </urlset>
