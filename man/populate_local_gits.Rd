@@ -4,12 +4,14 @@
 \alias{populate_local_gits}
 \title{use git via BiocBBSpack::getpk to retrieve sources into a folder}
 \usage{
-populate_local_gits(pkgset, gitspath)
+populate_local_gits(pkgset, gitspath, ...)
 }
 \arguments{
 \item{pkgset}{instance of PackageSet}
 
 \item{gitspath}{character(1) folder to be created if it does not exist}
+
+\item{\dots}{passed to getpk (might be useful for setting RELEASE_X_XX for git clone)}
 }
 \value{
 invisibly, the list of folders created under gitspath

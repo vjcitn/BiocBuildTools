@@ -18,13 +18,13 @@ setClass("PackageSet",
 
 #' constructor for PackageSet instances
 #' @importFrom methods new
-#' @import BiocPkgTools
 #' @param cvec character() vector
 #' @param biocversion character(1) defaulting to "3.11"
 #' @note Will issue message if some element of cvec is not
 #' found in BiocPkgTools::biocPkgList() result
 #' @export
 PackageSet = function(cvec, biocversion="3.11") {
+ if (!requireNamespace("BiocPkgTools")) stop("install BiocPkgTools to use this function")
  all_info = BiocPkgTools::biocPkgList(version=biocversion)
  odd = setdiff(cvec, all_info$Package)
  if (length(odd)>0) message("Some elements of cvec are not in Bioconductor.")
@@ -49,6 +49,7 @@ setMethod("show", "PackageSet",
 full_dep_opts = function() c("Depends", "Imports", "LinkingTo", "Suggests")
 
 .add_dependencies = function(pkgset, deps, omit="R") {
+  if (!requireNamespace("BiocPkgTools")) stop("install BiocPkgTools to use this function")
   full_pkg_tbl = BiocPkgTools::buildPkgDependencyDataFrame(
     dependencies = deps, version=pkgset@biocversion)
   kp = full_pkg_tbl[ which(full_pkg_tbl$Package %in% pkgset@pkgnames), ]
@@ -75,6 +76,7 @@ setMethod("add_dependencies", "PackageSet",
 #' use git via BiocBBSpack::getpk to retrieve sources into a folder
 #' @param pkgset instance of PackageSet
 #' @param gitspath character(1) folder to be created if it does not exist
+#' @param \dots passed to getpk (might be useful for setting RELEASE_X_XX for git clone)
 #' @return invisibly, the list of folders created under gitspath
 #' @examples
 #' ps = PackageSet(c("BiocFileCache", "ensembldb")) #bioc_coreset()[c(3,8)]) # two example packages
@@ -82,12 +84,12 @@ setMethod("add_dependencies", "PackageSet",
 #' ll = populate_local_gits(ps, td)
 #' ll
 #' @export
-populate_local_gits = function(pkgset, gitspath) {
+populate_local_gits = function(pkgset, gitspath, ...) {
    if (!dir.exists(gitspath)) dir.create(gitspath)
    curd = getwd()
    on.exit(setwd(curd))
    setwd(gitspath)
-   ans = lapply(pkgset@pkgnames, function(x) try(getpk(x)))
+   ans = lapply(pkgset@pkgnames, function(x) try(getpk(x, ...)))
    chk = sapply(ans, inherits, "try-error")
    if (any(chk)) message("there was a try-error thrown; check contents of gitspath")
    invisible(dir())
@@ -121,6 +123,7 @@ read_descriptions = function(gitspath, fields=c("Package", "Version")) {
 #' unlink(tf)
 #' @export
 local_gits_behind_bioc = function(gitspath, biocversion="3.11") {
+ if (!requireNamespace("BiocPkgTools")) stop("install BiocPkgTools to use this function")
  ds = read_descriptions(gitspath)
  curinfo = BiocPkgTools::biocPkgList(version=biocversion)
  pks = sapply(ds, "[", 1)

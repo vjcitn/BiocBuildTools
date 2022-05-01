@@ -1,6 +1,6 @@
 Package: BiocBuildTools
 Title: Bioconductor software ecosystem building tools
-Version: 0.1.1
+Version: 0.1.5
 Authors@R: 
     person(given = "Vincent",
            family = "Carey",
@@ -18,7 +18,7 @@ License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Depends: R (>= 4.0.3)
 Suggests: 
     knitr,
@@ -31,7 +31,6 @@ Suggests:
     magrittr,
     dplyr, pkgnet
 Imports: 
-    BiocPkgTools,
     pkgbuild,
     methods,
     BiocManager,

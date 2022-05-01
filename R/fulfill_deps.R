@@ -12,6 +12,7 @@
 #' define the ecosystem for evaluation.
 #' @export
 fulfill_deps = function(pkg, depdf = NULL, exclude="KEGG.db", ...) {
+ if (!requireNamespace("BiocPkgTools")) stop("install BiocPkgTools to use this function")
  oopt = options(no.readonly=TRUE)
  on.exit(options(oopt))
  options(timeout=300)

@@ -4,10 +4,14 @@
 \alias{getpk}
 \title{use HTTPS to clone a package from Bioconductor git}
 \usage{
-getpk(x)
+getpk(x, branch = "RELEASE_3_15", nuke_inst_doc = TRUE)
 }
 \arguments{
 \item{x}{character(1) package name expected to be a Bioconductor package in git}
+
+\item{branch}{character(1) "RELEASE_3_15" is default}
+
+\item{nuke_inst_doc}{logical(1) defaults to TRUE ... to avoid pkgbuild::build query, remove inst/doc}
 }
 \value{
 result of system()

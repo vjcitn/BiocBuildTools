@@ -1,4 +1,5 @@
 prep1 = function(pkgname) {
+        if (!requireNamespace("BiocPkgTools")) stop("install BiocPkgTools to use this function")
         dtypes = c("Depends", "Imports", "Suggests", "LinkingTo")
 	ddf = as.data.frame(
            BiocPkgTools::buildPkgDependencyDataFrame(dependencies=dtypes))

@@ -57,8 +57,7 @@ rcc_to_dataframes = function(rcclist) {
 #' dfs = bcc_to_dataframes(demo_bcchk_out)
 #' names(dfs)
 #' names(dfs[[1]])
-#' @export
-bcc_to_dataframes = function (bcclist) 
+bcc_to_dataframes_old = function (bcclist) 
 {
     nel = length(bcclist)
     nms = names(bcclist)
