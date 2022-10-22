@@ -2,6 +2,7 @@
 #' @param x character(1) package name expected to be a Bioconductor package in git
 #' @param branch character(1) "RELEASE_3_15" is default
 #' @param nuke_inst_doc logical(1) defaults to TRUE ... to avoid pkgbuild::build query, remove inst/doc
+#' @note Oct 2022 added --depth 1 to git clone command
 #' @return result of system()
 #' @examples
 #' td = tempdir()
@@ -12,7 +13,7 @@
 #' setwd(wd)
 #' @export
 getpk = function (x, branch="RELEASE_3_15", nuke_inst_doc = TRUE) {
- system(sprintf("git clone https://git.bioconductor.org/packages/%s.git --branch %s", 
+ system(sprintf("git clone https://git.bioconductor.org/packages/%s.git --depth 1 --branch %s", 
     x, branch))
  instdocpath = paste0(x, "/inst/doc")
  chkinstdoc = dir.exists(instdocpath)

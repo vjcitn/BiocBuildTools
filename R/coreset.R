@@ -13,23 +13,24 @@ bioc_coreset = function() {
 setOldClass("biocPkgList")
 
 setClass("PackageSet",
-  representation(pkgnames="character", biocversion="character",
+  representation(pkgnames="character", biocversion="character", branchname="character",
     dependencies="list", info="biocPkgList"))
 
 #' constructor for PackageSet instances
 #' @importFrom methods new
 #' @param cvec character() vector
-#' @param biocversion character(1) defaulting to "3.11"
+#' @param biocversion character(1) defaulting to "3.15"
+#' @param branchname character(1)
 #' @note Will issue message if some element of cvec is not
 #' found in BiocPkgTools::biocPkgList() result
 #' @export
-PackageSet = function(cvec, biocversion="3.11") {
+PackageSet = function(cvec, biocversion="3.15", branchname="RELEASE_3_15") {
  if (!requireNamespace("BiocPkgTools")) stop("install BiocPkgTools to use this function")
  all_info = BiocPkgTools::biocPkgList(version=biocversion)
  odd = setdiff(cvec, all_info$Package)
  if (length(odd)>0) message("Some elements of cvec are not in Bioconductor.")
  info = all_info[which(all_info$Package %in% cvec),]
- new("PackageSet", pkgnames=cvec, info=info, biocversion=biocversion)
+ new("PackageSet", pkgnames=cvec, info=info, biocversion=biocversion, branchname=branchname)
 }
 
 setMethod("show", "PackageSet",
@@ -39,6 +40,7 @@ setMethod("show", "PackageSet",
     length(object@pkgnames), object@biocversion))
   cat(sprintf(" There are %s unique dependencies listed.\n", 
     length(unique(unlist(object@dependencies)))))
+  cat(sprintf(" Branch name: %s\n", object@branchname))
 })
 
 #' a vector listing the key dependencies with correct orthography
@@ -89,7 +91,8 @@ populate_local_gits = function(pkgset, gitspath, ...) {
    curd = getwd()
    on.exit(setwd(curd))
    setwd(gitspath)
-   ans = lapply(pkgset@pkgnames, function(x) try(getpk(x, ...)))
+   curbranch = pkgset@branchname
+   ans = lapply(pkgset@pkgnames, function(x) try(getpk(x, branch=curbranch, ...)))
    chk = sapply(ans, inherits, "try-error")
    if (any(chk)) message("there was a try-error thrown; check contents of gitspath")
    invisible(dir())

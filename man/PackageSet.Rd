@@ -4,12 +4,14 @@
 \alias{PackageSet}
 \title{constructor for PackageSet instances}
 \usage{
-PackageSet(cvec, biocversion = "3.11")
+PackageSet(cvec, biocversion = "3.15", branchname = "RELEASE_3_15")
 }
 \arguments{
 \item{cvec}{character() vector}
 
-\item{biocversion}{character(1) defaulting to "3.11"}
+\item{biocversion}{character(1) defaulting to "3.15"}
+
+\item{branchname}{character(1)}
 }
 \description{
 constructor for PackageSet instances

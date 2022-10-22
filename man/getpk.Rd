@@ -19,6 +19,9 @@ result of system()
 \description{
 use HTTPS to clone a package from Bioconductor git
 }
+\note{
+Oct 2022 added --depth 1 to git clone command
+}
 \examples{
 td = tempdir()
 wd = getwd()

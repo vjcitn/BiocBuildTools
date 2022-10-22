@@ -1,0 +1,54 @@
+
+
+This is being done after freeze of 3.15
+
+library(BiocBuildTools)
+
+source("build_packageSet_3.15.R", echo=TRUE)
+
+produces PackageSet_RELEASE_3_15.rds
+
+looks like:
+
+BiocBBSpack PackageSet instance.
+ There are 2140 packages listed (Bioconductor version 3.15).
+ There are 2382 unique dependencies listed.
+ Branch name: RELEASE_3_15
+
+The first thing we want to do is get the git sources
+for all packages.  Use populate_local_gits with gitspath on a
+large disk space.  In October 2022 we changed getpk
+to clone with --depth 1.
+
+library(BiocBuildTools)
+myset = readRDS("PackageSet_RELEASE_3_15.rds")
+populate_local_gits(myset, "/media/volume/sdb/vince/REL_315_srcs")
+
+> populate_local_gits
+function (pkgset, gitspath, ...) 
+{
+    if (!dir.exists(gitspath)) 
+        dir.create(gitspath)
+    curd = getwd()
+    on.exit(setwd(curd))
+    setwd(gitspath)
+    ans = lapply(pkgset@pkgnames, function(x) try(getpk(x, ...)))
+    chk = sapply(ans, inherits, "try-error")
+    if (any(chk)) 
+        message("there was a try-error thrown; check contents of gitspath")
+    invisible(dir())
+}
+<bytecode: 0x555caf90ab80>
+<environment: namespace:BiocBuildTools>
+> getpk
+function (x, branch = "RELEASE_3_15", nuke_inst_doc = TRUE) 
+{
+    system(sprintf("git clone https://git.bioconductor.org/packages/%s.git --branch %s", 
+        x, branch))
+    instdocpath = paste0(x, "/inst/doc")
+    chkinstdoc = dir.exists(instdocpath)
+    if (chkinstdoc & nuke_inst_doc) 
+        unlink(instdocpath, recursive = TRUE)
+}
+<bytecode: 0x555caf91e7a8>
+
