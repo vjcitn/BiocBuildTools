@@ -24,31 +24,29 @@ library(BiocBuildTools)
 myset = readRDS("PackageSet_RELEASE_3_15.rds")
 populate_local_gits(myset, "/media/volume/sdb/vince/REL_315_srcs")
 
-> populate_local_gits
-function (pkgset, gitspath, ...) 
-{
-    if (!dir.exists(gitspath)) 
-        dir.create(gitspath)
-    curd = getwd()
-    on.exit(setwd(curd))
-    setwd(gitspath)
-    ans = lapply(pkgset@pkgnames, function(x) try(getpk(x, ...)))
-    chk = sapply(ans, inherits, "try-error")
-    if (any(chk)) 
-        message("there was a try-error thrown; check contents of gitspath")
-    invisible(dir())
-}
-<bytecode: 0x555caf90ab80>
-<environment: namespace:BiocBuildTools>
-> getpk
-function (x, branch = "RELEASE_3_15", nuke_inst_doc = TRUE) 
-{
-    system(sprintf("git clone https://git.bioconductor.org/packages/%s.git --branch %s", 
-        x, branch))
-    instdocpath = paste0(x, "/inst/doc")
-    chkinstdoc = dir.exists(instdocpath)
-    if (chkinstdoc & nuke_inst_doc) 
-        unlink(instdocpath, recursive = TRUE)
-}
-<bytecode: 0x555caf91e7a8>
+On oct 22 it took 33 minutes to check out all sources.
 
+What is the purpose of having all the sources?  We can
+program over them to learn about the ecosystem.  But we
+don't necessarily need them for the next steps:
+
+1) install all packages and declared dependencies as
+non-redundantly as possible, with maximum parallelism
+
+2) obtain results of R CMD check for all packages -- this
+probably benefits from having the sources but I don't know
+if it is essential. 
+
+--
+
+Building process.
+
+We could start from scratch but we will not do so.  BiocManager::install
+can be used on the PackageSet instance pkgnames element with a 
+high number of CPUs to get us to a fully installed state.  The check
+phase might necessitate additional installations to get all required
+dependencies.
+
+Continuing with code above defining myset:
+
+BiocManager::install(myset@pkgnames, Ncpus=40, dependencies=TRUE)
