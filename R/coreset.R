@@ -172,3 +172,11 @@ bbs_check_built = function (x)
     unlink(paste0(pn, ".Rcheck/", pn), recursive=TRUE, force=TRUE)
 }
 
+
+#' list packages absent from current installation
+#' @param pset PackageSet instance
+#' @export
+absent = function(pset) {
+  ii = rownames(installed.packages())
+  setdiff(pset@pkgnames, ii)
+}

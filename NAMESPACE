@@ -2,6 +2,7 @@
 
 S3method(print,BBT_pkgnet)
 export(PackageSet)
+export(absent)
 export(bcc_to_dataframes)
 export(bioc_coreset)
 export(browse_checks)

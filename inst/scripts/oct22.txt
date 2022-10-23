@@ -1,19 +1,28 @@
 
+This is being done after freeze of 3.15
+
+It is crucial to use BiocManager for 3.15 to get accurate post mortem information --
+why did certain packages fail to install?
+
 
 This is being done after freeze of 3.15
 
+You need devtools/remotes and vjcitn/BiocBuildTools and BiocPkgTools, use Ncpus large
+
 library(BiocBuildTools)
 
-source("build_packageSet_3.15.R", echo=TRUE)
+source("build_packageset_3.15.R", echo=TRUE)
 
 produces PackageSet_RELEASE_3_15.rds
 
 looks like:
 
+
 BiocBBSpack PackageSet instance.
  There are 2140 packages listed (Bioconductor version 3.15).
- There are 2382 unique dependencies listed.
+ There are 2379 unique dependencies listed.
  Branch name: RELEASE_3_15
+
 
 The first thing we want to do is get the git sources
 for all packages.  Use populate_local_gits with gitspath on a
@@ -50,3 +59,78 @@ dependencies.
 Continuing with code above defining myset:
 
 BiocManager::install(myset@pkgnames, Ncpus=40, dependencies=TRUE)
+
+After this first try (hour to download sources for installation,
+15 minutes for all installations?) we had failures for
+
+c("ScISI", "ppiStats", "flowUtils", "rsbml", "SLGI", "RpsiXML", 
+"HilbertVisGUI", "tspair", "RmiR", "IsoGeneGUI", "gaia", "seqbias", 
+"TDARACNE", "inveRsion", "ArrayExpressHTS", "ReQON", "gprege", 
+"BitSeq", "annmap", "networkBMA", "RMassBank", "ensemblVEP", 
+"clonotypeR", "ChemmineOB", "BiGGR", "PSICQUIC", "flowCL", "Sushi", 
+"Rnits", "coMET", "CAnD", "caOmicsV", "ABAEnrichment", "ProteomicsAnnotationHubData", 
+"tofsims", "CountClust", "genphen", "GenoGAM", "diffloop", "CancerInSilico", 
+"TVTB", "IntEREst", "TSRchitect", "trena", "Onassis", "iteremoval", 
+"MACPET", "Rgin", "perturbatr", "NBSplice", "gpart", "TimeSeriesExperiment", 
+"PrecisionTrialDrawer", "epihet", "GAPGOM", "phemd", "GladiaTOX", 
+"XCIR", "MMAPPR2", "Autotuner", "sojourner", "pulsedSilac", "ASpediaFI", 
+"PubScore", "EnMCB", "ctgGEM", "GCSConnection", "sangeranalyseR", 
+"CytoTree", "GCSFilesystem", "Herper", "Travel", "TraRe", "rawrr", 
+"MsBackendRawFileReader")
+
+based on   setdiff(myset@pkgnames, rownames(installed.packages())) # now absent(myset)
+
+
+Some of these are notorious (ScISI, ppiStats, rsbml); we noted that
+HilbertVisGUI seems to require gtkmm which we then installed
+
+We now need to diagnose problems with these packages:
+
+#-- failures.txt has content
+fails = c("flowUtils", "rsbml", "SLGI", "RpsiXML",
+"tspair", "RmiR", "IsoGeneGUI", "gaia", "seqbias",
+"TDARACNE", "inveRsion", "ArrayExpressHTS", "ReQON", "gprege",
+"BitSeq", "annmap", "networkBMA", "RMassBank", "ensemblVEP",
+"clonotypeR", "ChemmineOB", "BiGGR", "PSICQUIC", "flowCL", "Sushi",
+"Rnits", "coMET", "CAnD", "caOmicsV", "ABAEnrichment", "ProteomicsAnnotationHubData",
+"tofsims", "CountClust", "genphen", "GenoGAM", "diffloop", "CancerInSilico",
+"TVTB", "IntEREst", "TSRchitect", "trena", "Onassis", "iteremoval",
+"MACPET", "Rgin", "perturbatr", "NBSplice", "gpart", "TimeSeriesExperiment",
+"PrecisionTrialDrawer", "epihet", "GAPGOM", "phemd", "GladiaTOX",
+"XCIR", "MMAPPR2", "Autotuner", "sojourner", "pulsedSilac", "ASpediaFI",
+"PubScore", "EnMCB", "ctgGEM", "GCSConnection", "sangeranalyseR",
+"CytoTree", "GCSFilesystem", "Herper", "Travel", "TraRe", "rawrr",
+"MsBackendRawFileReader")
+
+BiocManager::install(fails, dependencies=TRUE)
+#--end of failures.txt
+
+
+To do this we will try to capture all output of the building/erroring process
+
+R --no-save < failures.txt &> failures.log
+
+A simple scan:
+
+Warning: dependencies 'GenKern', 'SPARQL', 'colortools', 'mppa', 'EntropyExplorer', 'sampSurf', 'mGSZ', 'vbsr' are not available
+ERROR: dependency 'GenKern' is not available for package 'TDARACNE'
+ERROR: dependency 'SPARQL' is not available for package 'flowCL'
+ERROR: dependency 'colortools' is not available for package 'coMET'
+stvjc@visually-civil-zebra:~/OCT_2022/BiocBuildTools/inst/scripts$ grep "not available" failures.log
+Warning: dependencies 'GenKern', 'SPARQL', 'colortools', 'mppa', 'EntropyExplorer', 'sampSurf', 'mGSZ', 'vbsr' are not available
+ERROR: dependency 'GenKern' is not available for package 'TDARACNE'
+ERROR: dependency 'SPARQL' is not available for package 'flowCL'
+ERROR: dependency 'colortools' is not available for package 'coMET'
+ERROR: dependency 'mppa' is not available for package 'NBSplice'
+ERROR: dependency 'EntropyExplorer' is not available for package 'epihet'
+ERROR: dependency 'sampSurf' is not available for package 'sojourner'
+ERROR: dependency 'mGSZ' is not available for package 'ASpediaFI'
+ERROR: dependency 'vbsr' is not available for package 'TraRe'
+  error: The cross platform, open source .NET framework (mono) is not available.
+ERROR: dependency 'seqbias' is not available for package 'ReQON'
+ERROR: dependency 'ChemmineOB' is not available for package 'RMassBank'
+ERROR: dependency 'rsbml' is not available for package 'BiGGR'
+ERROR: dependency 'rawrr' is not available for package 'MsBackendRawFileReader'
+[5]   Done                    R --no-save < failures.txt &> failures.log
+
+We'd like a simple method to record the cause of non-installation.

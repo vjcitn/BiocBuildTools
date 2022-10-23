@@ -3,6 +3,8 @@ library(BiocBuildTools)
 version = "RELEASE_3_15"
 versionTag = "3.15"
 
+stopifnot(BiocManager::version() == versionTag)
+
 td = tempdir()
 
 od = getwd()
