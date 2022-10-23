@@ -239,3 +239,22 @@ failure that we'd like to automate.
 
 :wq
 
+--- How to convey failure information is a topic to discuss.  We want
+tooling to identify when a missing CRAN dependency is the cause.
+
+--- Scaling the check process
+
+Once all the packages and dependencies for installation are present, we can
+start running check.  Intuitively this may fail often because dependencies for
+vignettes may be missing.  Maybe the check should be preceded by an install with
+dependencies=TRUE.
+
+library(BiocParallel)
+library(BiocBuildTools)
+register(SnowParam(8)) # seems more robust
+od = getwd()
+setwd("~/BBS_space/REL_315_srcs")
+allpk = dir()
+try16 = bplapply(allpk[1:16], safe_rcmdcheck)
+setwd(od)
+save(try16, file="try16.rda")
