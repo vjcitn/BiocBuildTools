@@ -60,77 +60,182 @@ Continuing with code above defining myset:
 
 BiocManager::install(myset@pkgnames, Ncpus=40, dependencies=TRUE)
 
-After this first try (hour to download sources for installation,
-15 minutes for all installations?) we had failures for
+It took around two hours to install 4100+ packages.
 
-c("ScISI", "ppiStats", "flowUtils", "rsbml", "SLGI", "RpsiXML", 
-"HilbertVisGUI", "tspair", "RmiR", "IsoGeneGUI", "gaia", "seqbias", 
-"TDARACNE", "inveRsion", "ArrayExpressHTS", "ReQON", "gprege", 
-"BitSeq", "annmap", "networkBMA", "RMassBank", "ensemblVEP", 
-"clonotypeR", "ChemmineOB", "BiGGR", "PSICQUIC", "flowCL", "Sushi", 
-"Rnits", "coMET", "CAnD", "caOmicsV", "ABAEnrichment", "ProteomicsAnnotationHubData", 
-"tofsims", "CountClust", "genphen", "GenoGAM", "diffloop", "CancerInSilico", 
-"TVTB", "IntEREst", "TSRchitect", "trena", "Onassis", "iteremoval", 
-"MACPET", "Rgin", "perturbatr", "NBSplice", "gpart", "TimeSeriesExperiment", 
-"PrecisionTrialDrawer", "epihet", "GAPGOM", "phemd", "GladiaTOX", 
-"XCIR", "MMAPPR2", "Autotuner", "sojourner", "pulsedSilac", "ASpediaFI", 
-"PubScore", "EnMCB", "ctgGEM", "GCSConnection", "sangeranalyseR", 
-"CytoTree", "GCSFilesystem", "Herper", "Travel", "TraRe", "rawrr", 
-"MsBackendRawFileReader")
+stvjc@visually-civil-zebra:~/OCT_2022/BiocBuildTools/inst/scripts$ ls -tl /home/stvjc/BBS_space/R-42-315-dist/lib/R/library |head
+total 16508
+drwxrwxr-x  7 stvjc stvjc 4096 Oct 23 03:03 censcyt
+drwxrwxr-x  9 stvjc stvjc 4096 Oct 23 03:03 treekoR
+drwxrwxr-x  9 stvjc stvjc 4096 Oct 23 03:03 CyTOFpower
+drwxrwxr-x 10 stvjc stvjc 4096 Oct 23 03:03 CytoTree
+drwxrwxr-x  9 stvjc stvjc 4096 Oct 23 03:03 CATALYST
+drwxrwxr-x  8 stvjc stvjc 4096 Oct 23 03:03 ChAMP
+drwxrwxr-x  7 stvjc stvjc 4096 Oct 23 03:03 diffcyt
+drwxrwxr-x  8 stvjc stvjc 4096 Oct 23 03:02 MetaCyto
+drwxrwxr-x  9 stvjc stvjc 4096 Oct 23 03:02 FlowSOM
+stvjc@visually-civil-zebra:~/OCT_2022/BiocBuildTools/inst/scripts$ ls -tl /home/stvjc/BBS_space/R-42-315-dist/lib/R/library |tail
+drwxrwxr-x  7 stvjc stvjc 4096 Oct 23 00:59 splines
+drwxrwxr-x  6 stvjc stvjc 4096 Oct 23 00:59 datasets
+drwxrwxr-x  9 stvjc stvjc 4096 Oct 23 00:59 stats
+drwxrwxr-x  8 stvjc stvjc 4096 Oct 23 00:59 graphics
+drwxrwxr-x 11 stvjc stvjc 4096 Oct 23 00:59 grDevices
+drwxrwxr-x 10 stvjc stvjc 4096 Oct 23 00:59 utils
+drwxrwxr-x  6 stvjc stvjc 4096 Oct 23 00:59 compiler
+drwxrwxr-x  7 stvjc stvjc 4096 Oct 23 00:59 tools
+drwxrwxr-x 21 stvjc stvjc 4096 Oct 23 00:59 translations
+drwxrwxr-x  7 stvjc stvjc 4096 Oct 23 00:59 base
+stvjc@visually-civil-zebra:~/OCT_2022/BiocBuildTools/inst/scripts$ ls -tl /home/stvjc/BBS_space/R-42-315-dist/lib/R/library |wc
+   4128   37145  222110
+stvjc@visually-civil-zebra:~/OCT_2022/BiocBuildTools/inst/scripts$ 
 
-based on   setdiff(myset@pkgnames, rownames(installed.packages())) # now absent(myset)
+Which packages in manifest failed to install?
+
+> library(BiocBuildTools)
+> myset = readRDS("PackageSet_RELEASE_3_15.rds")
+> sort(absent(myset))  # compares manifest list to installed packages
+ [1] "ABAEnrichment"               "ASpediaFI"                  
+ [3] "Autotuner"                   "BiGGR"                      
+ [5] "CancerInSilico"              "CeTF"                       
+ [7] "ChemmineOB"                  "coexnet"                    
+ [9] "coMET"                       "CountClust"                 
+[11] "DEGreport"                   "epihet"                     
+[13] "EWCE"                        "flowCL"                     
+[15] "GeneTonic"                   "GenoGAM"                    
+[17] "GenVisR"                     "gpart"                      
+[19] "gprege"                      "Herper"                     
+[21] "IsoGeneGUI"                  "isomiRs"                    
+[23] "MACPET"                      "MethCP"                     
+[25] "NBSplice"                    "networkBMA"                 
+[27] "Onassis"                     "orthogene"                  
+[29] "perturbatr"                  "PrecisionTrialDrawer"       
+[31] "ProteomicsAnnotationHubData" "pulsedSilac"                
+[33] "Rgin"                        "RMassBank"                  
+[35] "RmiR"                        "RNASeqR"                    
+[37] "rsbml"                       "ScISI"                      
+[39] "scRecover"                   "SLGI"                       
+[41] "sojourner"                   "TDARACNE"                   
+[43] "tofsims"                     "TraRe"                      
+[45] "Travel"                      "TSRchitect"                 
+[47] "XCIR"                       
 
 
-Some of these are notorious (ScISI, ppiStats, rsbml); we noted that
-HilbertVisGUI seems to require gtkmm which we then installed
 
-We now need to diagnose problems with these packages:
+Some of these are notorious (ScISI, rsbml).
 
-#-- failures.txt has content
-fails = c("flowUtils", "rsbml", "SLGI", "RpsiXML",
-"tspair", "RmiR", "IsoGeneGUI", "gaia", "seqbias",
-"TDARACNE", "inveRsion", "ArrayExpressHTS", "ReQON", "gprege",
-"BitSeq", "annmap", "networkBMA", "RMassBank", "ensemblVEP",
-"clonotypeR", "ChemmineOB", "BiGGR", "PSICQUIC", "flowCL", "Sushi",
-"Rnits", "coMET", "CAnD", "caOmicsV", "ABAEnrichment", "ProteomicsAnnotationHubData",
-"tofsims", "CountClust", "genphen", "GenoGAM", "diffloop", "CancerInSilico",
-"TVTB", "IntEREst", "TSRchitect", "trena", "Onassis", "iteremoval",
-"MACPET", "Rgin", "perturbatr", "NBSplice", "gpart", "TimeSeriesExperiment",
-"PrecisionTrialDrawer", "epihet", "GAPGOM", "phemd", "GladiaTOX",
-"XCIR", "MMAPPR2", "Autotuner", "sojourner", "pulsedSilac", "ASpediaFI",
-"PubScore", "EnMCB", "ctgGEM", "GCSConnection", "sangeranalyseR",
-"CytoTree", "GCSFilesystem", "Herper", "Travel", "TraRe", "rawrr",
-"MsBackendRawFileReader")
+
+#-- fail_315.R
+fails = c("ABAEnrichment", "ASpediaFI", "Autotuner", "BiGGR", "CancerInSilico", 
+"CeTF", "ChemmineOB", "coexnet", "coMET", "CountClust", "DEGreport", 
+"epihet", "EWCE", "flowCL", "GeneTonic", "GenoGAM", "GenVisR", 
+"gpart", "gprege", "Herper", "IsoGeneGUI", "isomiRs", "MACPET", 
+"MethCP", "NBSplice", "networkBMA", "Onassis", "orthogene", "perturbatr", 
+"PrecisionTrialDrawer", "ProteomicsAnnotationHubData", "pulsedSilac", 
+"Rgin", "RMassBank", "RmiR", "RNASeqR", "rsbml", "ScISI", "scRecover", 
+"SLGI", "sojourner", "TDARACNE", "tofsims", "TraRe", "Travel", 
+"TSRchitect", "XCIR")
 
 BiocManager::install(fails, dependencies=TRUE)
-#--end of failures.txt
-
+#-- end
 
 To do this we will try to capture all output of the building/erroring process
 
-R --no-save < failures.txt &> failures.log
+R315 --no-save < fail_315.R &> failures_315.log
 
 A simple scan:
 
-Warning: dependencies 'GenKern', 'SPARQL', 'colortools', 'mppa', 'EntropyExplorer', 'sampSurf', 'mGSZ', 'vbsr' are not available
-ERROR: dependency 'GenKern' is not available for package 'TDARACNE'
-ERROR: dependency 'SPARQL' is not available for package 'flowCL'
-ERROR: dependency 'colortools' is not available for package 'coMET'
-stvjc@visually-civil-zebra:~/OCT_2022/BiocBuildTools/inst/scripts$ grep "not available" failures.log
-Warning: dependencies 'GenKern', 'SPARQL', 'colortools', 'mppa', 'EntropyExplorer', 'sampSurf', 'mGSZ', 'vbsr' are not available
-ERROR: dependency 'GenKern' is not available for package 'TDARACNE'
-ERROR: dependency 'SPARQL' is not available for package 'flowCL'
-ERROR: dependency 'colortools' is not available for package 'coMET'
-ERROR: dependency 'mppa' is not available for package 'NBSplice'
-ERROR: dependency 'EntropyExplorer' is not available for package 'epihet'
-ERROR: dependency 'sampSurf' is not available for package 'sojourner'
 ERROR: dependency 'mGSZ' is not available for package 'ASpediaFI'
+ERROR: compilation failed for package 'CancerInSilico'
+ERROR: dependency 'GenomicTools' is not available for package 'CeTF'
+ERROR: compilation failed for package 'ChemmineOB'
+ERROR: dependency 'colortools' is not available for package 'coMET'
+ERROR: dependency 'lasso2' is not available for package 'DEGreport'
+ERROR: dependency 'EntropyExplorer' is not available for package 'epihet'
+ERROR: dependency 'SPARQL' is not available for package 'flowCL'
+ERROR: lazy loading failed for package 'GeneTonic'
+ERROR: dependency 'FField' is not available for package 'GenVisR'
+ERROR: compilation failed for package 'gpart'
+ERROR: dependency 'gptk' is not available for package 'gprege'
+ERROR: dependency 'orQA' is not available for package 'IsoGeneGUI'
+ERROR: compilation failed for package 'MACPET'
+ERROR: dependency 'mppa' is not available for package 'NBSplice'
+ERROR: compilation failed for package 'networkBMA'
+ERROR: dependency 'Matrix.utils' is not available for package 'orthogene'
+ERROR: dependency 'cgdsr' is not available for package 'PrecisionTrialDrawer'
+ERROR: dependency 'taRifx' is not available for package 'pulsedSilac'
+ERROR: compilation failed for package 'Rgin'
+ERROR: configuration failed for package 'rsbml'
+ERROR: dependency 'Rmagic' is not available for package 'scRecover'
+ERROR: dependency 'sampSurf' is not available for package 'sojourner'
+ERROR: dependency 'GenKern' is not available for package 'TDARACNE'
 ERROR: dependency 'vbsr' is not available for package 'TraRe'
-  error: The cross platform, open source .NET framework (mono) is not available.
-ERROR: dependency 'seqbias' is not available for package 'ReQON'
-ERROR: dependency 'ChemmineOB' is not available for package 'RMassBank'
+ERROR: compilation failed for package 'Travel'
 ERROR: dependency 'rsbml' is not available for package 'BiGGR'
-ERROR: dependency 'rawrr' is not available for package 'MsBackendRawFileReader'
-[5]   Done                    R --no-save < failures.txt &> failures.log
+ERROR: dependency 'orthogene' is not available for package 'EWCE'
+ERROR: dependency 'DEGreport' is not available for package 'isomiRs'
+ERROR: dependency 'ChemmineOB' is not available for package 'RMassBank'
 
-We'd like a simple method to record the cause of non-installation.
+Some failed packages are not mentioned above.  We need to go deeper.
+
+ABAEnrichment fails for lack of ABAData.  This could only be determined by attempting manual
+install.  I don't know why it didn't get into the log.  Perhaps BiocManager can't attempt
+installation, even though the package is in the manifest.
+
+-- Here's a list of packages removed in 3.16:
+
+Software Packages:
+
+ABAEnrichment Autotuner CAnD caOmicsV clonotypeR CountClust diffloop GCSConnection GCSFilesystem GenoGAM genphen gprege networkBMA Onassis perturbatr ppiStats ProteomicsAnnotationHubData PSICQUIC PubScore Rgin RmiR RpsiXML ScISI SLGI Sushi tofsims TSRchitect
+
+Experiment Data Packages:
+
+DREAM4 MSstatsBioData ppiData
+
+Workflow Packages:
+
+proteomics
+
+---
+
+Bottom line.  We can get reasonable "explanatory text" for a number of failed
+installations, and the text often indicates that a CRAN dependency has gone missing.
+
+Because packages can get back into CRAN, this leads to some effort on investigations of
+failure that we'd like to automate.
+
+---
+
+> explain_absent("failures_315.log")[,-3]
+                    pkg                                                                         event
+1             ASpediaFI             ERROR: dependency 'mGSZ' is not available for package 'ASpediaFI'
+2        CancerInSilico                        ERROR: compilation failed for package 'CancerInSilico'
+3                  CeTF          ERROR: dependency 'GenomicTools' is not available for package 'CeTF'
+4            ChemmineOB                            ERROR: compilation failed for package 'ChemmineOB'
+5                 coMET           ERROR: dependency 'colortools' is not available for package 'coMET'
+6             DEGreport           ERROR: dependency 'lasso2' is not available for package 'DEGreport'
+7                epihet     ERROR: dependency 'EntropyExplorer' is not available for package 'epihet'
+8                flowCL              ERROR: dependency 'SPARQL' is not available for package 'flowCL'
+9             GeneTonic                            ERROR: lazy loading failed for package 'GeneTonic'
+10              GenVisR             ERROR: dependency 'FField' is not available for package 'GenVisR'
+11                gpart                                 ERROR: compilation failed for package 'gpart'
+12               gprege                ERROR: dependency 'gptk' is not available for package 'gprege'
+13           IsoGeneGUI            ERROR: dependency 'orQA' is not available for package 'IsoGeneGUI'
+14               MACPET                                ERROR: compilation failed for package 'MACPET'
+15             NBSplice              ERROR: dependency 'mppa' is not available for package 'NBSplice'
+16           networkBMA                            ERROR: compilation failed for package 'networkBMA'
+17            orthogene     ERROR: dependency 'Matrix.utils' is not available for package 'orthogene'
+18 PrecisionTrialDrawer ERROR: dependency 'cgdsr' is not available for package 'PrecisionTrialDrawer'
+19          pulsedSilac         ERROR: dependency 'taRifx' is not available for package 'pulsedSilac'
+20                 Rgin                                  ERROR: compilation failed for package 'Rgin'
+21                rsbml                               ERROR: configuration failed for package 'rsbml'
+22            scRecover           ERROR: dependency 'Rmagic' is not available for package 'scRecover'
+23            sojourner         ERROR: dependency 'sampSurf' is not available for package 'sojourner'
+24             TDARACNE           ERROR: dependency 'GenKern' is not available for package 'TDARACNE'
+25                TraRe                 ERROR: dependency 'vbsr' is not available for package 'TraRe'
+26               Travel                                ERROR: compilation failed for package 'Travel'
+27                BiGGR                ERROR: dependency 'rsbml' is not available for package 'BiGGR'
+28                 EWCE             ERROR: dependency 'orthogene' is not available for package 'EWCE'
+29              isomiRs          ERROR: dependency 'DEGreport' is not available for package 'isomiRs'
+30            RMassBank       ERROR: dependency 'ChemmineOB' is not available for package 'RMassBank'
+
+:wq
+
