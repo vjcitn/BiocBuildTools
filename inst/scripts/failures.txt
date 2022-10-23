@@ -1,0 +1,16 @@
+fails = c("flowUtils", "rsbml", "SLGI", "RpsiXML",
+"tspair", "RmiR", "IsoGeneGUI", "gaia", "seqbias",
+"TDARACNE", "inveRsion", "ArrayExpressHTS", "ReQON", "gprege",
+"BitSeq", "annmap", "networkBMA", "RMassBank", "ensemblVEP",
+"clonotypeR", "ChemmineOB", "BiGGR", "PSICQUIC", "flowCL", "Sushi",
+"Rnits", "coMET", "CAnD", "caOmicsV", "ABAEnrichment", "ProteomicsAnnotationHubData",
+"tofsims", "CountClust", "genphen", "GenoGAM", "diffloop", "CancerInSilico",
+"TVTB", "IntEREst", "TSRchitect", "trena", "Onassis", "iteremoval",
+"MACPET", "Rgin", "perturbatr", "NBSplice", "gpart", "TimeSeriesExperiment",
+"PrecisionTrialDrawer", "epihet", "GAPGOM", "phemd", "GladiaTOX",
+"XCIR", "MMAPPR2", "Autotuner", "sojourner", "pulsedSilac", "ASpediaFI",
+"PubScore", "EnMCB", "ctgGEM", "GCSConnection", "sangeranalyseR",
+"CytoTree", "GCSFilesystem", "Herper", "Travel", "TraRe", "rawrr",
+"MsBackendRawFileReader")
+
+BiocManager::install(fails, dependencies=TRUE)
