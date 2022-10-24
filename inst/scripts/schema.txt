@@ -1,0 +1,13 @@
+
+Prepare ubuntu, especially latex
+
+Bioc git branch (e.g., RELEASE_3_15)
+-> manifest
+-> PackageSet
+-> add dependencies
+-> populate_local_gits
+-> BiocManager::install [ensure version coincides with git branch] with large Ncpus to get functional R
+-> iterate over git sources: safe_rcmdcheck, save each result
+-> collect all check results, store in SQLite
+
+Cadence of updates to database: periodic scan of repos, or github action on repo push?
