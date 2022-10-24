@@ -1,0 +1,44 @@
+library(BiocBuildTools)
+ls(2)
+?status_db_init
+head(dir("~/BBS_space/chks315/"))
+allrds = dir("~/BBS_space/chks315")
+allpa = dir("~/BBS_space/chks315", full=TRUE)
+head(allrds)
+pnames = sapply(strsplit(allrds, "_"), "[", 1)
+head(pnames)
+tail(pnames)
+library(rcmdcheck)
+allchks = lapply(allpa, readRDS)
+allchks = lapply(allpa, function(x) try(readRDS(x)))
+which(sapply(allchks, inherits, "try-error"))
+allpa[42]
+which(sapply(allchks, inherits, "try-error")) -> drp
+allchks2  = allchks[-drp]
+ls(3)
+savehistory(file="import.chk.rds.hist.txt")
+ls()
+length(pnames)
+pnames2 = pnames[-drp]
+length(allchks2)
+length(pnames2)
+sapply(allchks2[1:5], "[[", "package")
+ver = sapply(allchks2, "[[", "package")
+all.equal(ver, pnames2)
+dfs = lapply(allchks2, rcc_to_dataframes)
+dfs = lapply(allchks2, function(x) try(rcc_to_dataframes(x))
+)
+length(dfs)
+sum(sapply(dfs, function(x) inherits(x, "try-error")))
+rcc_to_dataframes
+ls()
+alldfs = rcc_to_dataframes(allchks2)
+alldfs[[1]]
+dim(alldfs)
+class(alldfs)
+str(alldfs)
+names(alldfs)
+ls(3)
+status_db_init("db_315_1900.sqlite", alldfs)
+status_db_init
+savehistory(file="build_db.hist.txt")

@@ -1,0 +1,19 @@
+library(BiocBuildTools)
+ls(2)
+?status_db_init
+head(dir("~/BBS_space/chks315/"))
+allrds = dir("~/BBS_space/chks315")
+allpa = dir("~/BBS_space/chks315", full=TRUE)
+head(allrds)
+pnames = sapply(strsplit(allrds, "_"), "[", 1)
+head(pnames)
+tail(pnames)
+library(rcmdcheck)
+allchks = lapply(allpa, readRDS)
+allchks = lapply(allpa, function(x) try(readRDS(x)))
+which(sapply(allchks, inherits, "try-error"))
+allpa[42]
+which(sapply(allchks, inherits, "try-error")) -> drp
+allchks2  = allchks[-drp]
+ls(3)
+savehistory(file="import.chk.rds.hist.txt")
