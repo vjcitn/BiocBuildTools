@@ -2,6 +2,7 @@
 get_pkgname = function (x) x$metadata$Package
 get_notes = function (x) {
     noo = x$note
+    if (length(noo)==0) return("No bioccheck notes")
     unname(sapply(noo, function(x) grep("NOTE:", x, value = TRUE)))
 }
 get_warnings = function (z) {

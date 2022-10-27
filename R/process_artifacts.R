@@ -27,9 +27,9 @@ process_artifacts = function (dbpath = tempfile(), run_app=TRUE,
     pn = lapply(dir(patt= "_pnet"), function(x) gsub("_.*", "",
         x))
     names(ppp) = unlist(pn)
-    chkdfs = rcc_to_dataframes(ccc)
+    chkdfs = rcclist_to_dataframes(ccc)
     for (i in 1:length(bcc)) bcc[[i]]$package = names(bcc)[i]
-    bchkdfs = bcc_to_dataframes(bcc)
+    bchkdfs = bcclist_to_dataframes(bcc)
     status_db_init(dbpath, chkdfs, !startup)
     status_db_init(dbpath, bchkdfs, TRUE)
     con = dbConnect(RSQLite::SQLite(), dbpath)
