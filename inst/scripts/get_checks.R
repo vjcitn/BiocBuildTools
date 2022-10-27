@@ -5,10 +5,18 @@
    library(BiocParallel)
    library(rcmdcheck)
    library(BiocBuildTools)
-   register(SnowParam(40)) # seems more robust
+spar = SnowParam(30)
+bplog(spar) = TRUE
+bplogdir(spar) = "~/BBS_space/BPLOGS"
+bptimeout(spar) = 600
+
+   register(spar)
    
    checks.destination = "~/BBS_space/chks316"
    sources.folder = "~/BBS_space/REL_316_srcs"
+
+if (!dir.exists(checks.destination)) dir.create(checks.destination)
+if (!dir.exists(sources.folder)) stop("can't find sources in sources.folder; folder does not exist")
 
 #source("build_packageset_3.16a.R")
 
