@@ -10,3 +10,31 @@ process_bcc = function(folder) {
  out = do.call(rbind, alldf)
  out |> dplyr::filter(!grepl("Checking|OK$", log))
 }
+
+#' helper for bco2df
+#' @param x the warning or error component of BiocCheck
+#' @return data.frame with checkType
+.bco2df = function (x)
+{   
+    ns = sapply(x, function(x) length(unlist(x)))
+    ty = rep(names(x), ns)
+    ans = data.frame(type = ty, warning = unlist(x))
+    rownames(ans) = NULL
+    ans
+}
+
+#' convert BiocCheck output (just error and warning) to list of data.frames
+#' @param x BiocCheck result
+#' @return list of data frames errors, warnings
+#' @export
+bco2df = function(x) {
+ stopifnot(all(c("error", "warning") %in% names(x)))
+ errdf = data.frame(type="error", error="none")
+ if (length(x$error)>0)
+   errdf = .bco2df(x$error)
+ wrndf = data.frame(type="warning", error="none")
+ if (length(x$warning)>0)
+   wrndf = .bco2df(x$warning)
+ list(errors=errdf, warnings=wrndf)
+}
+

@@ -6,8 +6,16 @@ Bioc git branch (e.g., RELEASE_3_15)
 -> PackageSet
 -> add dependencies
 -> populate_local_gits
--> BiocManager::install [ensure version coincides with git branch] with large Ncpus to get functional R
+-> BiocManager::install [ensure version coincides with git branch] 
+      with large Ncpus to get functional R
 -> iterate over git sources: safe_rcmdcheck, save each result
 -> collect all check results, store in SQLite
 
 Cadence of updates to database: periodic scan of repos, or github action on repo push?
+
+Crucial step -- could be daily or hourly, but the task is to update the database
+when we think it is valuable to do so
+
+- platform-specific check/BiocCheck
+- artifact BUILD_STATUS_db.txt can be generated from database
+- must use xvfb-run

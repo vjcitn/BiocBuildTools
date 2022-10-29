@@ -1,14 +1,16 @@
 
+# RUN WITH xvfb-run
    
    
    
    library(BiocParallel)
    library(rcmdcheck)
    library(BiocBuildTools)
-spar = SnowParam(30)
+spar = SnowParam(35)
 bplog(spar) = TRUE
 bplogdir(spar) = "~/BBS_space/BPLOGS"
 bptimeout(spar) = 600
+bpthreshold(spar) = "DEBUG"
 
    register(spar)
    
@@ -43,6 +45,7 @@ get_checks = function(pkgset, sources.folder, checks.destination, N.TRIES=5) {
      setwd(sources.folder)
      print(getwd())
      tryall = bplapply(shuffle(todo), function(x) {
+          futile.logger::flog.info(paste0("'x' = ", x))
           z = try(safe_rcmdcheck(x)); 
           saveRDS(z, paste0(checks.destination, "/", x, "_chk.rds"))
           })
