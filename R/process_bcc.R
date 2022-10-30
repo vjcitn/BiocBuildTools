@@ -18,7 +18,7 @@ process_bcc = function(folder) {
 {   
     ns = sapply(x, function(x) length(unlist(x)))
     ty = rep(names(x), ns)
-    ans = data.frame(type = ty, warning = unlist(x))
+    ans = data.frame(type = ty, message = unlist(x))
     rownames(ans) = NULL
     ans
 }
@@ -29,10 +29,10 @@ process_bcc = function(folder) {
 #' @export
 bco2df = function(x) {
  stopifnot(all(c("error", "warning") %in% names(x)))
- errdf = data.frame(type="error", error="none")
+ errdf = data.frame(type="error", message="none")
  if (length(x$error)>0)
    errdf = .bco2df(x$error)
- wrndf = data.frame(type="warning", error="none")
+ wrndf = data.frame(type="warning", message="none")
  if (length(x$warning)>0)
    wrndf = .bco2df(x$warning)
  list(errors=errdf, warnings=wrndf)
