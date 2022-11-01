@@ -2,6 +2,8 @@
 #' @param sources.folder character(1) path to github checkouts of Bioc packages
 #' @param bchecks.destination character(1) path to a writeable folder where BiocCheck logs are written
 #' @param bcobj.destination character(1) path to a folder where RDS files with data frames are written
+#' @param BPPARAM defaults to bpparam()
+#' @param BPOPTIONS defaults to bpoptions()
 #' @examples
 #' \dontrun{
 #' set.seed(1234) # we shuffle packages to avoid restarting on a bad one
@@ -15,7 +17,8 @@
 #' # get_bcc(  ...
 #' }
 #' @export
-get_bcc = function(sources.folder, bcchecks.destination, bcobj.destination) {
+get_bcc = function(sources.folder, bcchecks.destination, bcobj.destination,
+     BPPARAM=bpparam(), BPOPTIONS=bpoptions()) {
    goal = dir(sources.folder)
    done = gsub(".BiocCheck$", "", dir(bcchecks.destination))
    todo = setdiff(goal, done)
@@ -31,5 +34,5 @@ get_bcc = function(sources.folder, bcchecks.destination, bcobj.destination) {
       dest = paste0(bcobj.destination, "/", paste0(basename(x), "_chk.rds"))
       saveRDS(ans, dest)
       NULL
-      })
-}   
+      }, BPPARAM=BPPARAM, BPOPTIONS=BPOPTIONS)
+}

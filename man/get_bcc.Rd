@@ -4,12 +4,22 @@
 \alias{get_bcc}
 \title{use bco2df to acquire limited data frames from BiocCheck applied to packages}
 \usage{
-get_bcc(sources.folder, bcchecks.destination, bcobj.destination)
+get_bcc(
+  sources.folder,
+  bcchecks.destination,
+  bcobj.destination,
+  BPPARAM = bpparam(),
+  BPOPTIONS = bpoptions()
+)
 }
 \arguments{
 \item{sources.folder}{character(1) path to github checkouts of Bioc packages}
 
 \item{bcobj.destination}{character(1) path to a folder where RDS files with data frames are written}
+
+\item{BPPARAM}{defaults to bpparam()}
+
+\item{BPOPTIONS}{defaults to bpoptions()}
 
 \item{bchecks.destination}{character(1) path to a writeable folder where BiocCheck logs are written}
 }
