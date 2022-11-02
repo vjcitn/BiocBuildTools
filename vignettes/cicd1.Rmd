@@ -105,16 +105,15 @@ a snapshot of the associated repositories.
 ```{r lkzip}
 library(BiocBuildTools)
 bioc_coreset()
+bioc_coreset(small=TRUE)
 ```
 
-In the following, we unzip the snapshot in a temporary
+In the following, we produce the
 folder.
 ```{r dounz}
-td = tempdir()
-curd = getwd()
-setwd(td)
-file.copy(system.file("demo_srcs", package="BiocBuildTools"), td, recursive=TRUE)
-setwd(curd) # for knitr
+td = tempfile()
+dir.create(td)
+unzip(system.file("demo_srcs/litclone.zip", package="BiocBuildTools"), exdir=td)
 ```
 
 ## Self-testing
@@ -128,10 +127,8 @@ We'll use the `r BiocStyle::CRANpkg("rcmdcheck")` package to capture information
 on package compliance to basic standards.  This runs `R CMD check`
 and organizes the message stream from that process.
 ```{r doch, cache=FALSE}
-setwd(td)
-chk_parody = rcmdcheck::rcmdcheck("demo_srcs/parody", quiet=TRUE)
+chk_parody = rcmdcheck::rcmdcheck(paste0(td, "/parody"))
 names(chk_parody)
-setwd(curd) # for knitr
 ```
 The basic outcomes of a 'passed' check process are listed here:
 ```{r lkcnts}
@@ -155,30 +152,26 @@ of users and developers.
 R packages declare interdependencies explicitly in the `DESCRIPTION`
 file.  An example is
 ```{r lkdesc}
-setwd(td)
-dcf = read.dcf("demo_srcs/HCAExplorer/DESCRIPTION")
+dcf = read.dcf(paste0(td, "/vsn/DESCRIPTION"))
 cat(dcf[,"Imports"])
 cat("\n")
-setwd(curd)
 ```
 The fields `Depends`, `Imports`, `Suggests` and `LinkingTo` define
 the independently maintained packages that must be available for
-`r BiocStyle::Biocpkg("HCAExplorer")` to work effectively.  Details on 
+`r BiocStyle::Biocpkg("Rsamtools")` to work effectively.  Details on 
 these types of dependency are provided in 
 [Writing R Extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html).
 
 We can visualize the interdependencies of a small collection
 using `r BiocStyle::Biocpkg("BiocPkgTools")`.
 
-```{r getg, fig.height=6}
-suppressMessages({
+```{r getg, fig.height=6, message=FALSE}
 library(BiocPkgTools)
 library(BiocBuildTools)
 library(dplyr)
 library(magrittr)
-})
 dd = buildPkgDependencyDataFrame()
-dfc = dd %>% filter(Package %in% bioc_coreset() & dependency %in% bioc_coreset()) 
+dfc = dd %>% filter(Package %in% bioc_coreset(small=FALSE) & dependency %in% bioc_coreset(small=FALSE)) 
 gg = buildPkgDependencyIgraph(dfc)
 plot(gg)
 ```
