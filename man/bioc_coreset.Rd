@@ -4,7 +4,10 @@
 \alias{bioc_coreset}
 \title{define a small collection of packages of interest}
 \usage{
-bioc_coreset()
+bioc_coreset(small = TRUE)
+}
+\arguments{
+\item{small}{logical(1) return only 4 packages}
 }
 \value{
 a character vector

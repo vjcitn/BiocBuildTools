@@ -1,9 +1,11 @@
 #' define a small collection of packages of interest
+#' @param small logical(1) return only 4 packages
 #' @return a character vector
 #' @examples
 #' bioc_coreset()
 #' @export
-bioc_coreset = function() {
+bioc_coreset = function(small=TRUE) {
+ if (small) return(c("parody", "vsn", "BiocFileCache", "eds"))
  c("SummarizedExperiment", "GenomicRanges",
    "BiocFileCache", "Rsamtools", "rhdf5", "GEOquery",
    "SingleCellExperiment", "ensembldb", "parody",

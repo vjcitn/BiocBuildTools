@@ -1,6 +1,6 @@
 Package: BiocBuildTools
 Title: Bioconductor software ecosystem building tools
-Version: 0.1.13
+Version: 0.1.14
 Authors@R: 
     person(given = "Vincent",
            family = "Carey",
@@ -29,7 +29,10 @@ Suggests:
     BiocStyle,
     igraph,
     magrittr,
-    dplyr, pkgnet
+    dplyr, pkgnet, SummarizedExperiment,
+	GenomicRanges, BiocFileCache, Rsamtools,
+	rhdf5, GEOquery, SingleCellExperiment,
+	ensembldb, parody, DESeq2, EDASeq, bsseq
 Imports: 
     pkgbuild,
     methods,
