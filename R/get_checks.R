@@ -27,11 +27,15 @@
 #if (!dir.exists(sources.folder)) stop("can't find sources in sources.folder; folder does not exist")
 #get_checks(pset, sources.folder, checks.destination)
 #' run rcmdcheck on all sources associated with a PackageSet and drop the RDS outputs in a folder
+#' @importFrom methods slot
 #' @param pkgset instance of PackageSet
 #' @param sources.folder path to git repos
 #' @param checks.destination path to folder holding RDS of rcmdcheck output
+#' @param BPPARAM defaults to bpparam()
+#' @param BPOPTIONS defaults to bpoptions()
 #' @export
-get_checks = function(pkgset, sources.folder, checks.destination) {
+get_checks = function(pkgset, sources.folder, checks.destination,
+   BPPARAM=bpparam(), BPOPTIONS=bpoptions()) {
    
    allp = slot(pkgset, "pkgnames")
    N_SRCS = length(dir(sources.folder))
@@ -50,7 +54,7 @@ get_checks = function(pkgset, sources.folder, checks.destination) {
           futile.logger::flog.error(paste0("'x' = ", x))
           saveRDS(z, paste0(checks.destination, "/", basename(x), "_chk.rds"))
           NULL
-          })
+          }, BPPARAM=BPPARAM, BPOPTIONS=BPOPTIONS)
    }
           
 

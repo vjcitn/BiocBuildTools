@@ -25,13 +25,3 @@ and \code{fun} for function interrelationships, saved as RDS to \verb{[basename(
 \code{serialize} is FALSE, simply returns the object.  This is intended to be used
 on a large number of packages and thus a checkpointing approach is the default.
 }
-\examples{
-td = tempdir()
-cur = getwd()
-setwd(td)
-pdy = system.file("demo_srcs/parody", package="BiocBuildTools")
-get_pnet(pdy)
-file.exists("parody_pnet.rds")
-class(readRDS("parody_pnet.rds"))
-setwd(cur)
-}

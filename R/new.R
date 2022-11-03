@@ -7,16 +7,6 @@
 #' `serialize` is FALSE, simply returns the object.  This is intended to be used
 #' on a large number of packages and thus a checkpointing approach is the default.
 #' @return See Note.
-#' @examples
-#' td = tempdir()
-#' cur = getwd()
-#' setwd(td)
-#' pdy = system.file("demo_srcs/parody", package="BiocBuildTools")
-#' get_pnet(pdy)
-#' file.exists("parody_pnet.rds")
-#' class(readRDS("parody_pnet.rds"))
-#' setwd(cur)
-#' @export
 get_pnet = function(sourcedir, serialize=TRUE, overwrite=TRUE) {  # to run covr
         require(pkgnet)
         bn = basename(sourcedir)
@@ -42,6 +32,7 @@ get_pnet = function(sourcedir, serialize=TRUE, overwrite=TRUE) {  # to run covr
 
 
 #' check an R package tarball
+#' @importFrom utils untar capture.output head
 #' @param x character(1) path to tarball
 #' @param error passed to `rcmdcheck::rcmdcheck`
 #' @param args passed to `rcmdcheck::rcmdcheck`
@@ -54,7 +45,7 @@ get_pnet = function(sourcedir, serialize=TRUE, overwrite=TRUE) {  # to run covr
 #' setwd(td)
 #' pdy = system.file("demo_srcs/parody", package="BiocBuildTools")
 #' pkgbuild::build(pdy)
-#' tbcheck(dir(patt="parody_"))
+#' tbcheck(dir(pattern="parody_"))
 #' file.exists("parody_chk.rds")
 #' setwd(cur)
 #' @export

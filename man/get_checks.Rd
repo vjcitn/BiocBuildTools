@@ -4,7 +4,13 @@
 \alias{get_checks}
 \title{run rcmdcheck on all sources associated with a PackageSet and drop the RDS outputs in a folder}
 \usage{
-get_checks(pkgset, sources.folder, checks.destination)
+get_checks(
+  pkgset,
+  sources.folder,
+  checks.destination,
+  BPPARAM = bpparam(),
+  BPOPTIONS = bpoptions()
+)
 }
 \arguments{
 \item{pkgset}{instance of PackageSet}
@@ -12,6 +18,10 @@ get_checks(pkgset, sources.folder, checks.destination)
 \item{sources.folder}{path to git repos}
 
 \item{checks.destination}{path to folder holding RDS of rcmdcheck output}
+
+\item{BPPARAM}{defaults to bpparam()}
+
+\item{BPOPTIONS}{defaults to bpoptions()}
 }
 \description{
 run rcmdcheck on all sources associated with a PackageSet and drop the RDS outputs in a folder

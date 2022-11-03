@@ -9,7 +9,7 @@ bioc_coreset = function(small=TRUE) {
  c("SummarizedExperiment", "GenomicRanges",
    "BiocFileCache", "Rsamtools", "rhdf5", "GEOquery",
    "SingleCellExperiment", "ensembldb", "parody",
-   "DESeq2", "EDASeq", "HCAExplorer", "bsseq")
+   "DESeq2", "EDASeq", "bsseq")
 }
 
 setOldClass("biocPkgList")

@@ -13,18 +13,18 @@
 process_artifacts = function (dbpath = tempfile(), run_app=TRUE, 
       startup=TRUE, serialize_pnet = TRUE, pnet_obj_name = "pnet.rds") 
 {
-    bcc = lapply(dir(patt = "bcch"), readRDS)
-    bn = lapply(dir(patt = "bcch"), function(x) gsub("_.*", "", 
+    bcc = lapply(dir(pattern = "bcch"), readRDS)
+    bn = lapply(dir(pattern = "bcch"), function(x) gsub("_.*", "", 
         x))
     names(bcc) = unlist(bn)
 #
-    ccc = lapply(dir(patt = "_ch"), readRDS)
-    cn = lapply(dir(patt= "_ch"), function(x) gsub("_.*", "",
+    ccc = lapply(dir(pattern = "_ch"), readRDS)
+    cn = lapply(dir(pattern= "_ch"), function(x) gsub("_.*", "",
         x))
     names(ccc) = unlist(cn)
 #
-    ppp = lapply(dir(patt = "_pnet"), readRDS)
-    pn = lapply(dir(patt= "_pnet"), function(x) gsub("_.*", "",
+    ppp = lapply(dir(pattern = "_pnet"), readRDS)
+    pn = lapply(dir(pattern= "_pnet"), function(x) gsub("_.*", "",
         x))
     names(ppp) = unlist(pn)
     chkdfs = rcclist_to_dataframes(ccc)

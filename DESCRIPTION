@@ -1,6 +1,6 @@
 Package: BiocBuildTools
 Title: Bioconductor software ecosystem building tools
-Version: 0.1.14
+Version: 0.1.15
 Authors@R: 
     person(given = "Vincent",
            family = "Carey",
@@ -32,7 +32,8 @@ Suggests:
     dplyr, pkgnet, SummarizedExperiment,
 	GenomicRanges, BiocFileCache, Rsamtools,
 	rhdf5, GEOquery, SingleCellExperiment,
-	ensembldb, parody, DESeq2, EDASeq, bsseq
+	ensembldb, parody, DESeq2, EDASeq, bsseq,
+	BiocPkgTools
 Imports: 
     pkgbuild,
     methods,
@@ -41,7 +42,7 @@ Imports:
     RSQLite,
     shiny,
     pkgnet, 
-    utils
+    utils, futile.logger, BiocCheck, BiocParallel
 URL: https://vjcitn.github.io/BiocBuildTools/
 BugReports: https://github.com/vjcitn/BiocBuildTools/issues/new/choose
 VignetteBuilder: knitr

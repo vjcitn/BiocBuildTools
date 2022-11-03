@@ -34,7 +34,7 @@ cur = getwd()
 setwd(td)
 pdy = system.file("demo_srcs/parody", package="BiocBuildTools")
 pkgbuild::build(pdy)
-tbcheck(dir(patt="parody_"))
+tbcheck(dir(pattern="parody_"))
 file.exists("parody_chk.rds")
 setwd(cur)
 }
