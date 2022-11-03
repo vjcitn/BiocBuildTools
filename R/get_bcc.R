@@ -27,6 +27,7 @@ bco2df = function(x) {
 }
 
 #' use bco2df to acquire limited data frames from BiocCheck applied to packages
+#' @import BiocParallel
 #' @param sources.folder character(1) path to github checkouts of Bioc packages
 #' @param bcchecks.destination character(1) path to a writeable folder where BiocCheck logs are written
 #' @param bcobj.destination character(1) path to a folder where RDS files with data frames are written
