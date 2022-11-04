@@ -19,27 +19,6 @@
 #' cov_tab_demo[1:2]
 "cov_tab_demo"
 
-#' a vector of package names needed for a fairly complete BBS run, 15 feb 2020
-#' @docType data
-#' @format character vector
-#' @examples
-#' head(soft_021520)
-"soft_021520"
-
-#' a vector of package names needed for a fairly complete BBS run, 17 march 2020
-#' @docType data
-#' @format character vector
-#' @examples
-#' head(bioc_3.10_software_2020.03.17)
-"bioc_3.10_software_2020.03.17"
-
-#' a vector of package names needed for a fairly complete BBS run, 15 feb 2020
-#' @docType data
-#' @format character vector
-#' @examples
-#' head(soft_2020_04_20)
-"soft_2020_04_20"
-
 #' a list of BiocCheck::BiocCheck results for demonstration purposes, produced nov 2020
 #' @docType data
 #' @format list 

@@ -4,10 +4,14 @@
 \alias{.bco2df}
 \title{helper for bco2df}
 \usage{
-.bco2df(x)
+.bco2df(x, lcomd, chkd)
 }
 \arguments{
 \item{x}{the warning or error component of BiocCheck}
+
+\item{lcomd}{last commit date}
+
+\item{chkd}{date of check}
 }
 \value{
 data.frame with checkType

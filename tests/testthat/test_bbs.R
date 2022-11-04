@@ -39,7 +39,7 @@ test_that(
 
 
 test_that("sqlite builds", {
-   packs = c("parody", "vsn", "eds", "BiocFileCache")
+   packs = c("parody", "vsn", "eds")
    
    library(BiocBuildTools)
    civ = Sys.getenv("CI")
@@ -78,8 +78,8 @@ test_that("sqlite builds", {
    build_sqlite_db(tsql, rcmd=chkdest, bcc=bobdest)
    expect_true(file.exists(tsql))
    expect_error(build_sqlite_db(tsql, rcmd=chkdest, bcc=bobdest))
-   rm(chkdest)
-   rm(bdest)
-   rm(bobdest)
+  # rm(chkdest)
+  # rm(bdest)
+  # rm(bobdest)
 })
    
