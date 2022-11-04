@@ -1,12 +1,17 @@
+ 
 
 #' helper for bco2df
 #' @param x the warning or error component of BiocCheck
+#' @param lcomd last commit date
+#' @param chkd date of check
 #' @return data.frame with checkType
-.bco2df = function (x)
+.bco2df = function (x, lcomd, chkd)
 {
     ns = sapply(x, function(x) length(unlist(x)))
     ty = rep(names(x), ns)
     ans = data.frame(type = ty, message = unlist(x))
+    ans$commit_date = lcomd
+    ans$check_date = chkd
     rownames(ans) = NULL
     ans
 }
@@ -17,12 +22,14 @@
 #' @export
 bco2df = function(x) {
  stopifnot(all(c("error", "warning") %in% names(x)))
- errdf = data.frame(type="error", message="none")
+ lcomd = date_string(attr(x, "last_commit_date"))
+ chkd = date_string(attr(x, "check_date"))
+ errdf = data.frame(type="error", message="none", commit_date=lcomd, check_date=chkd)
  if (length(x$error)>0)
-   errdf = .bco2df(x$error)
- wrndf = data.frame(type="warning", message="none")
+   errdf = .bco2df(x$error, lcomd, chkd)
+ wrndf = data.frame(type="warning", message="none", commit_date=lcomd, check_date=chkd)
  if (length(x$warning)>0)
-   wrndf = .bco2df(x$warning)
+   wrndf = .bco2df(x$warning, lcomd, chkd)
  list(errors=errdf, warnings=wrndf)
 }
 
@@ -34,6 +41,14 @@ bco2df = function(x) {
 #' @param BPPARAM defaults to bpparam()
 #' @param BPOPTIONS defaults to bpoptions()
 #' @examples
+#' ps = PackageSet("parody")
+#' tf = tempfile()
+#' td = dir.create(tf)
+#' populate_local_gits(ps, tf)
+#' dir.create(bcdest <- tempfile("bcd"))
+#' dir.create(bcodest <- tempfile("bco"))
+#' get_bcc(tf, bcdest, bcodest)
+#' readRDS(dir(bcodest, full=TRUE))
 #' \dontrun{
 #' set.seed(1234) # we shuffle packages to avoid restarting on a bad one
 #' bcchecks.destination = dir.create(tempfile("bccheck"))
@@ -59,7 +74,10 @@ get_bcc = function(sources.folder, bcchecks.destination, bcobj.destination,
       print(x)
       futile.logger::flog.info(paste0("'x' = ", x))
       futile.logger::flog.error(paste0("'x' = ", x))
-      ans = try(bco2df(BiocCheck::BiocCheck(x, checkDir=bcchecks.destination))) 
+      tmpans = BiocCheck::BiocCheck(x, checkDir=bcchecks.destination)
+      attr(tmpans, "last_commit_date") <- last_commit_date(x)
+      attr(tmpans, "check_date") <- Sys.time()
+      ans = try(bco2df(tmpans))
       dest = paste0(bcobj.destination, "/", paste0(basename(x), "_chk.rds"))
       saveRDS(ans, dest)
       NULL

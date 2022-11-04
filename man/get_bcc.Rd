@@ -27,6 +27,14 @@ get_bcc(
 use bco2df to acquire limited data frames from BiocCheck applied to packages
 }
 \examples{
+ps = PackageSet("parody")
+tf = tempfile()
+td = dir.create(tf)
+populate_local_gits(ps, tf)
+dir.create(bcdest <- tempfile("bcd"))
+dir.create(bcodest <- tempfile("bco"))
+get_bcc(tf, bcdest, bcodest)
+readRDS(dir(bcodest, full=TRUE))
 \dontrun{
 set.seed(1234) # we shuffle packages to avoid restarting on a bad one
 bcchecks.destination = dir.create(tempfile("bccheck"))
