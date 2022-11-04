@@ -21,12 +21,17 @@ setClass("PackageSet",
 #' constructor for PackageSet instances
 #' @importFrom methods new
 #' @param cvec character() vector
-#' @param biocversion character(1) defaulting to "3.15"
+#' @param biocversion character(1) defaulting to "3.16"
 #' @param branchname character(1)
 #' @note Will issue message if some element of cvec is not
 #' found in BiocPkgTools::biocPkgList() result
+#' @examples
+#' ps = PackageSet(bioc_coreset())
+#' ps
+#' ps = add_dependencies(ps)
+#' ps
 #' @export
-PackageSet = function(cvec, biocversion="3.15", branchname="RELEASE_3_15") {
+PackageSet = function(cvec, biocversion="3.16", branchname="RELEASE_3_16") {
  if (!requireNamespace("BiocPkgTools")) stop("install BiocPkgTools to use this function")
  all_info = BiocPkgTools::biocPkgList(version=biocversion)
  odd = setdiff(cvec, all_info$Package)
@@ -83,9 +88,11 @@ setMethod("add_dependencies", "PackageSet",
 #' @param \dots passed to getpk (might be useful for setting RELEASE_X_XX for git clone)
 #' @return invisibly, the list of folders created under gitspath
 #' @examples
-#' ps = PackageSet(c("BiocFileCache", "ensembldb")) #bioc_coreset()[c(3,8)]) # two example packages
-#' td = tempdir()
-#' ll = populate_local_gits(ps, td)
+#' ps = PackageSet(bioc_coreset()) # small
+#' ps = add_dependencies(ps)
+#' tf = tempfile("pop")
+#' dir.create(tf)
+#' ll = populate_local_gits(pkgset=ps, gitspath=tf)
 #' ll
 #' @export
 populate_local_gits = function(pkgset, gitspath, ...) {
@@ -97,7 +104,7 @@ populate_local_gits = function(pkgset, gitspath, ...) {
    ans = lapply(pkgset@pkgnames, function(x) try(getpk(x, branch=curbranch, ...)))
    chk = sapply(ans, inherits, "try-error")
    if (any(chk)) message("there was a try-error thrown; check contents of gitspath")
-   invisible(dir())
+   invisible(dir(gitspath, full.names=TRUE))
 }
 
 read_descriptions = function(gitspath, fields=c("Package", "Version")) {

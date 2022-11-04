@@ -4,12 +4,12 @@
 \alias{PackageSet}
 \title{constructor for PackageSet instances}
 \usage{
-PackageSet(cvec, biocversion = "3.15", branchname = "RELEASE_3_15")
+PackageSet(cvec, biocversion = "3.16", branchname = "RELEASE_3_16")
 }
 \arguments{
 \item{cvec}{character() vector}
 
-\item{biocversion}{character(1) defaulting to "3.15"}
+\item{biocversion}{character(1) defaulting to "3.16"}
 
 \item{branchname}{character(1)}
 }
@@ -19,4 +19,10 @@ constructor for PackageSet instances
 \note{
 Will issue message if some element of cvec is not
 found in BiocPkgTools::biocPkgList() result
+}
+\examples{
+ps = PackageSet(bioc_coreset())
+ps
+ps = add_dependencies(ps)
+ps
 }

@@ -5,12 +5,12 @@
 #' head(installed_r)
 "installed_r"
 
-#' a list of rcmdcheck::rcmdcheck results for demonstration purposes, produced dec 2019
+#' a list of rcmdcheck::rcmdcheck results for demonstration purposes, produced nov 2022
 #' @docType data
 #' @format list 
 #' @examples
-#' names(demo_rcmdchk_out)
-"demo_rcmdchk_out"
+#' names(demo_rcmdcheck_out)
+"demo_rcmdcheck_out"
 
 #' a list of covr::package_coverage results, thinned for demonstration purposes, produced dec 2019
 #' @docType data

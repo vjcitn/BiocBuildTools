@@ -55,6 +55,10 @@ build_sqlite_db = function( dbname = "chks.sqlite", rcmdcheck_obj_dir, bccheck_o
 make_df_component = function(rcclist, component="notes") {
   pks = sapply(rcclist, "[[", "package")
   nol = lapply(rcclist, "[[", component)
+  date_commit = vapply(rcclist, function(x) {
+            date_string(attr(x, "last_commit_date")) }, character(1))
+  date_check = vapply(rcclist, function(x) {
+            date_string(attr(x, "check_date")) }, character(1))
   if (component == "description") {
    nol = lapply(nol, function(x) strsplit(x, "\n")[[1]])
   }
@@ -62,29 +66,38 @@ make_df_component = function(rcclist, component="notes") {
   zn = which(nn==0)
   if (length(zn)>0)
     nol[zn] = paste0("NO ", toupper(component))
-  npk = rep(pks, sapply(nol, length))
-  ans = data.frame(package=npk, tmp=unlist(nol), stringsAsFactors=FALSE)
+  nls = sapply(nol, length)
+  npk = rep(pks, nls)
+  ndcom = rep(date_commit, nls)
+  ndche = rep(date_check, nls)
+  ans = data.frame(package=npk, tmp=unlist(nol), date_commit=ndcom, date_check=ndche, stringsAsFactors=FALSE)
   names(ans)[2] = component
   ans
 }
 
+date_string = function(x) as.character(as.Date(x, origin="1970-01-01"))
+
 #' produce list of data.frames for storage of R CMD check results in SQLite
 #' @param rcclist list of results of rcmdcheck::rcmdcheck
 #' @examples
-#' data(demo_rcmdchk_out)
-#' dfs = rcclist_to_dataframes(demo_rcmdchk_out)
+#' data(demo_rcmdcheck_out)
+#' dfs = rcclist_to_dataframes(demo_rcmdcheck_out)
 #' names(dfs)
-#' names(dfs[[1]])
 #' @export
 rcclist_to_dataframes = function(rcclist) {
-  pks = sapply(rcclist, "[[", "package")
-  vers = sapply(rcclist, "[[", "version")
+  pks = vapply(rcclist, function(x) x$package, character(1))
+  vers = vapply(rcclist, function(x) x$version, character(1)) # might need to coerce Nov 4 2022
   notes_df = make_df_component(rcclist, component="notes")
   err_df = make_df_component(rcclist, component="errors")
   warn_df = make_df_component(rcclist, component="warnings")
   inst_df = make_df_component(rcclist, component="install_out")
   desc_df = make_df_component(rcclist, component="description")
-  list(basic = data.frame(package=pks, version=vers, stringsAsFactors=FALSE),
+  date_commit = vapply(rcclist, function(x) {
+            date_string(attr(x, "last_commit_date")) }, character(1))
+  date_check = vapply(rcclist, function(x) {
+            date_string(attr(x, "check_date")) }, character(1))
+  list(basic = data.frame(package=pks, version=vers, date_commit=date_commit,
+         date_check=date_check, stringsAsFactors=FALSE),
    notes = notes_df, warnings=warn_df, errors=err_df, inst=inst_df, desc=desc_df)
 }
 

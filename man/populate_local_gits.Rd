@@ -20,8 +20,10 @@ invisibly, the list of folders created under gitspath
 use git via BiocBBSpack::getpk to retrieve sources into a folder
 }
 \examples{
-ps = PackageSet(c("BiocFileCache", "ensembldb")) #bioc_coreset()[c(3,8)]) # two example packages
-td = tempdir()
-ll = populate_local_gits(ps, td)
+ps = PackageSet(bioc_coreset()) # small
+ps = add_dependencies(ps)
+tf = tempfile("pop")
+dir.create(tf)
+ll = populate_local_gits(pkgset=ps, gitspath=tf)
 ll
 }

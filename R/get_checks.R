@@ -26,6 +26,16 @@
 #if (!dir.exists(checks.destination)) dir.create(checks.destination)
 #if (!dir.exists(sources.folder)) stop("can't find sources in sources.folder; folder does not exist")
 #get_checks(pset, sources.folder, checks.destination)
+
+#' use gert to get last commit date for a repo
+#' @param repo character(1) path to a checkout from git
+last_commit_date = function(repo) { 
+  ans = Sys.time() + NA # if gert not available, produce a classed NA
+  if (requireNamespace("gert")) ans = gert::git_log(repo=repo, max=1)$time 
+  ans
+}
+
+
 #' run rcmdcheck on all sources associated with a PackageSet and drop the RDS outputs in a folder
 #' @importFrom methods slot
 #' @param pkgset instance of PackageSet
@@ -52,6 +62,8 @@ get_checks = function(pkgset, sources.folder, checks.destination,
           futile.logger::flog.info(paste0("'x' = ", x))
           z = try(rcmdcheck::rcmdcheck(x, error_on="never")) # try(safe_rcmdcheck(x)); 
           futile.logger::flog.error(paste0("'x' = ", x))
+          attr(z, "last_commit_date") <- last_commit_date(x)
+          attr(z, "check_date") <- Sys.time()
           saveRDS(z, paste0(checks.destination, "/", basename(x), "_chk.rds"))
           NULL
           }, BPPARAM=BPPARAM, BPOPTIONS=BPOPTIONS)

@@ -13,8 +13,7 @@ rcclist_to_dataframes(rcclist)
 produce list of data.frames for storage of R CMD check results in SQLite
 }
 \examples{
-data(demo_rcmdchk_out)
-dfs = rcclist_to_dataframes(demo_rcmdchk_out)
+data(demo_rcmdcheck_out)
+dfs = rcclist_to_dataframes(demo_rcmdcheck_out)
 names(dfs)
-names(dfs[[1]])
 }
