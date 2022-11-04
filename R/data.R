@@ -2,6 +2,7 @@
 #' @docType data
 #' @format character vector
 #' @examples
+#' data(installed_r)
 #' head(installed_r)
 "installed_r"
 
@@ -9,20 +10,15 @@
 #' @docType data
 #' @format list 
 #' @examples
+#' data(demo_rcmdcheck_out)
 #' names(demo_rcmdcheck_out)
 "demo_rcmdcheck_out"
-
-#' a list of covr::package_coverage results, thinned for demonstration purposes, produced dec 2019
-#' @docType data
-#' @format list
-#' @examples
-#' cov_tab_demo[1:2]
-"cov_tab_demo"
 
 #' a list of BiocCheck::BiocCheck results for demonstration purposes, produced nov 2020
 #' @docType data
 #' @format list 
 #' @examples
+#' data(demo_bcchk_out)
 #' names(demo_bcchk_out)
 "demo_bcchk_out"
 

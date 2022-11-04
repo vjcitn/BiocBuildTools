@@ -14,6 +14,7 @@ demo_rcmdcheck_out
 a list of rcmdcheck::rcmdcheck results for demonstration purposes, produced nov 2022
 }
 \examples{
+data(demo_rcmdcheck_out)
 names(demo_rcmdcheck_out)
 }
 \keyword{datasets}

@@ -14,6 +14,7 @@ installed_r
 a vector of package names needed for a fairly complete BBS run, jul 7 2019
 }
 \examples{
+data(installed_r)
 head(installed_r)
 }
 \keyword{datasets}

@@ -61,7 +61,36 @@ bco2df = function(x) {
 #' # get_bcc(  ...
 #' }
 #' @export
-get_bcc = function(sources.folder, bcchecks.destination, bcobj.destination,
+get_bcc = function (sources.folder, bcchecks.destination, bcobj.destination, 
+    BPPARAM = bpparam(), BPOPTIONS = bpoptions()) 
+{
+    goal = dir(sources.folder)
+    done = gsub(".BiocCheck$", "", dir(bcchecks.destination))
+    todo = setdiff(goal, done)
+    print(head(todo))
+    print(length(todo))
+    todopaths = paste0(sources.folder, "/", todo)
+    shuffle = function(x) sample(x, size = length(x), replace = FALSE)
+    allbc3 = bplapply(shuffle(todopaths), function(x) {
+        print(x)
+        futile.logger::flog.info(paste0("'x' = ", x))
+        futile.logger::flog.error(paste0("'x' = ", x))
+        tmpans = try(BiocCheck::BiocCheck(x, checkDir = bcchecks.destination))
+        attr(tmpans, "last_commit_date") <- last_commit_date(x)
+        attr(tmpans, "check_date") <- Sys.time()
+        dest = paste0(bcobj.destination, "/", paste0(basename(x), 
+            "_chk.rds"))
+        if (inherits(tmpans, "try-error")) {
+            saveRDS(tmpans, dest)
+            return(NULL)
+            }
+        ans = try(bco2df(tmpans))
+        saveRDS(ans, dest)
+        NULL
+    }, BPPARAM = BPPARAM, BPOPTIONS = BPOPTIONS)
+}
+
+get_bcc_old = function(sources.folder, bcchecks.destination, bcobj.destination,
      BPPARAM=bpparam(), BPOPTIONS=bpoptions()) {
    goal = dir(sources.folder)
    done = gsub(".BiocCheck$", "", dir(bcchecks.destination))

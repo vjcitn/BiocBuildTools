@@ -14,6 +14,7 @@ demo_bcchk_out
 a list of BiocCheck::BiocCheck results for demonstration purposes, produced nov 2020
 }
 \examples{
+data(demo_bcchk_out)
 names(demo_bcchk_out)
 }
 \keyword{datasets}
