@@ -4,7 +4,7 @@ library(RSQLite)
 library(BiocBuildTools)
 
 
-con = RSQLite::dbConnect(RSQLite::SQLite(), "~/coredemo2.sqlite")
+con = RSQLite::dbConnect(RSQLite::SQLite(), "~/biocmaint.sqlite")
 
 #[1] "BcChkERR"  "BcChkWARN" "basic"     "desc"      "errors"    "inst"     
 #[7] "notes"     "warnings" 
@@ -55,6 +55,20 @@ con = RSQLite::dbConnect(RSQLite::SQLite(), "~/coredemo2.sqlite")
            tmp = RSQLite::dbGetQuery(con, paste0("select * from BcChkWARN where package = '", input$pkchoice, "'"))
            tmp[, c("type", "message")]
            })
+
+fixit = function(df, col) { df[[col]] = gsub("\\n", "<br>", df[[col]]); df }
+
+       output$errfreq = DT::renderDataTable({
+        con |> tbl("errors") |> filter(errors != "NO ERRORS") |> 
+               group_by(errors) |> summarise(n=n()) |> arrange(desc(n)) |> as.data.frame() |> fixit("errors")
+       }, escape=FALSE)
+       output$warnfreq = DT::renderDataTable({
+        con |> tbl("warnings") |> filter(warnings != "NO WARNINGS") |> group_by(warnings) |> summarise(n=n()) |> arrange(desc(n)) |>
+		as.data.frame() |> fixit("warnings")
+       },escape=FALSE)
+#con |> tbl("notes") |> group_by(notes) |> summarise(n=n()) |> arrange(desc(n))
+#con |> tbl("BcChkERR") |> group_by(message) |> summarise(n=n()) |> arrange(desc(n))
+#con |> tbl("BcChkWARN") |> group_by(message) |> summarise(n=n()) |> arrange(desc(n))
 
         output$about = renderUI({
           helpText("This app", 
