@@ -26,10 +26,9 @@ library(BiocParallel)
 spar = SnowParam(4)
 register(spar)
 
-get_checks(ps, sources.folder=td, checks.destination=chkdest)
-
-get_bcc(sources.folder=td, bcchecks.destination=bdest, bcobj.destination=bobdest,
+get_checks2(ps, sources.folder=td, checks.destination=chkdest,
+   bcchecks.destination=bdest, bcobj.destination=bobdest,
    BPOPTIONS=bpoptions(exports=c("chkdest", "bdest", "bobdest")))
 
-build_sqlite_db(rcmd=chkdest, bcc=bobdest)
+build_sqlite_db("chk2.sqlite", rcmd=chkdest, bcc=bobdest)
 
