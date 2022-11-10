@@ -1,4 +1,5 @@
 
+
 library(BiocBuildTools)
 civ = Sys.getenv("CI")
 stopifnot(civ=="true")
@@ -8,20 +9,22 @@ stopifnot(civ=="true")
 
 ps = readRDS("PackageSet_3.17.rds")
 
-td = tempfile("fulldemo")
-td = "~/BBS_space/NOV5_FULL/fulldemoacf8912304544"
+#td = tempfile("fulldemo")
+td = "~/BBS_space/NOV5_FULL/fulldemoacf8912304544" # updated 10 Nov
+
+#uu = lapply(xx[1501:2000], function(x) {cat(x, "\n"); zz = try(git_pull(repo=x)); od=getwd(); if (inherits(zz, "try-error")){setwd(x); system("git pull"); setwd(od)}})
+#uu = lapply(xx[2001:length(xx)], function(x) {cat(x, "\n"); zz = try(git_pull(repo=x)); od=getwd(); if (inherits(zz, "try-error")){setwd(x); system("git pull"); setwd(od)}})
 #dir.create(td)
 
 #populate_local_gits(ps, td)
 
-chkdest = tempfile("fullrchks")
-chkdest = "~/BBS_space/NOV7_FULL/rchk"
+chkdest = "~/BBS_space/NOV10_FULL/rchk"
 #dir.create(chkdest)
 
-bdest = "~/BBS_space/NOV7_FULL/bchk"
+bdest = "~/BBS_space/NOV10_FULL/bchk"
 dir.create(bdest)
 
-bobdest = "~/BBS_space/NOV7_FULL/bobs"
+bobdest = "~/BBS_space/NOV10_FULL/bobs"
 dir.create(bobdest)
 
 library(BiocParallel)
@@ -35,7 +38,6 @@ get_checks2(ps, sources.folder=td, checks.destination=chkdest,
    bcchecks.destination=bdest, bcobj.destination=bobdest,
    BPOPTIONS=bpoptions(exports=c("chkdest", "bdest", "bobdest")))
 
-build_sqlite_db("biocfull2.sqlite", rcmd=chkdest, bcc=bobdest, exists_ok=TRUE)
-
+build_sqlite_db("biocfull4.sqlite", rcmd=chkdest, bcc=bobdest)
 
 
