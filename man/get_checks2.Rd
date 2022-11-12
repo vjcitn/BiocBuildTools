@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_all.R
 \name{get_checks2}
 \alias{get_checks2}
-\title{run rcmdcheck on all sources associated with a PackageSet and drop the RDS outputs in a folder}
+\title{run rcmdcheck and BiocCheck on all sources associated with a PackageSet and drop the RDS outputs in separate folders}
 \usage{
 get_checks2(
   pkgset,
@@ -30,5 +30,5 @@ get_checks2(
 \item{BPOPTIONS}{defaults to bpoptions()}
 }
 \description{
-run rcmdcheck on all sources associated with a PackageSet and drop the RDS outputs in a folder
+run rcmdcheck and BiocCheck on all sources associated with a PackageSet and drop the RDS outputs in separate folders
 }
