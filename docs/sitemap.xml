@@ -22,6 +22,9 @@
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/PackageSet.html</loc>
   </url>
   <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/absent.html</loc>
+  </url>
+  <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/add_dependencies-PackageSet-method.html</loc>
   </url>
   <url>
@@ -29,6 +32,9 @@
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/bcc_to_dataframes.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/bco2df.html</loc>
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/bioc_3.10_software_2020.03.17.html</loc>
@@ -49,19 +55,40 @@
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/build1_with_buildsink.html</loc>
   </url>
   <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/build_sqlite_db.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/combine_status_dbs.html</loc>
+  </url>
+  <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/cov_tab_demo.html</loc>
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/demo_bcchk_out.html</loc>
   </url>
   <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/demo_rcmdcheck_out.html</loc>
+  </url>
+  <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/demo_rcmdchk_out.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/dot-bco2df.html</loc>
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/fulfill_deps.html</loc>
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/full_dep_opts.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/get_bcc.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/get_checks.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/get_checks2.html</loc>
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/get_pnet.html</loc>
@@ -74,6 +101,9 @@
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/installed_r.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/last_commit_date.html</loc>
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/local_gits_behind_bioc.html</loc>
@@ -95,6 +125,9 @@
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/rcc_to_dataframes.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/rcclist_to_dataframes.html</loc>
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/safe_rcmdcheck.html</loc>

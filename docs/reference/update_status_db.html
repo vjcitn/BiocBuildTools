@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiocBuildTools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.6</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -69,28 +69,37 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">update_status_db</span><span class="op">(</span>
-  <span class="va">sqlite_filename</span>,
-  <span class="va">tablename</span>,
-  dropfield <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">dropvalue</span>,
-  <span class="va">newdf</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">update_status_db</span><span class="op">(</span></span>
+<span>  <span class="va">sqlite_filename</span>,</span>
+<span>  <span class="va">tablename</span>,</span>
+<span>  dropfield <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">dropvalue</span>,</span>
+<span>  <span class="va">newdf</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>sqlite_filename</dt>
 <dd><p>character(1) filename of SQLite database; database must exist</p></dd>
+
+
 <dt>tablename</dt>
 <dd><p>character(1) name of table to operate on</p></dd>
+
+
 <dt>dropfield</dt>
 <dd><p>character(1) or NULL, the field used to select records to delete</p></dd>
+
+
 <dt>dropvalue</dt>
 <dd><p>character(1) only used if <code>dropfield</code> is not NULL, value used to
 select records for deletion</p></dd>
+
+
 <dt>newdf</dt>
 <dd><p>data.frame conforming to the table in <code>tablename</code> if such exists</p></dd>
+
 </dl></div>
     <div id="note">
     <h2>Note</h2>
@@ -109,7 +118,7 @@ select records for deletion</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
