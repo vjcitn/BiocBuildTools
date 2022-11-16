@@ -7,6 +7,9 @@
     <loc>https://vjcitn.github.io/BiocBuildTools/articles/cicd1.html</loc>
   </url>
   <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/articles/components.html</loc>
+  </url>
+  <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/articles/gcp.html</loc>
   </url>
   <url>
@@ -32,6 +35,9 @@
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/bcc_to_dataframes.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/bcclist_to_dataframes.html</loc>
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/bco2df.html</loc>
@@ -143,6 +149,9 @@
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/tbcheck.html</loc>
+  </url>
+  <url>
+    <loc>https://vjcitn.github.io/BiocBuildTools/reference/update_gits.html</loc>
   </url>
   <url>
     <loc>https://vjcitn.github.io/BiocBuildTools/reference/update_status_db.html</loc>
