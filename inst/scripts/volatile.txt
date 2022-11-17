@@ -1,0 +1,36 @@
+
+> con |> tbl("basic") |> distinct(version,package) |> group_by(package) |> summarise(n=n()) |> arrange(desc(n))
+# Source:     SQL [?? x 2]
+# Database:   sqlite 3.39.4 [/home/stvjc/BiocBuildTools/inst/scripts/biocfull2.sqlite]
+# Ordered by: desc(n)
+   package         n
+   <chr>       <int>
+ 1 GBScleanR       3
+ 2 FuseSOM         3
+ 3 trackViewer     2
+ 4 sechm           2
+ 5 scater          2
+ 6 rGREAT          2
+ 7 omicsViewer     2
+ 8 ngsReports      2
+ 9 mixOmics        2
+10 edgeR           2
+
+
+> con |> tbl("basic") |> filter(package %in% c("GBScleanR", "FuseSOM")) |> arrange(package)
+# Source:     SQL [10 x 4]
+# Database:   sqlite 3.39.4 [/home/stvjc/BiocBuildTools/inst/scripts/biocfull2.sqlite]
+# Ordered by: package
+   package   version date_commit date_check
+   <chr>     <chr>   <chr>       <chr>     
+ 1 FuseSOM   1.1.0   2022-11-01  2022-11-09
+ 2 FuseSOM   1.1.1   2022-11-08  2022-11-10
+ 3 FuseSOM   1.1.1   2022-11-08  2022-11-11
+ 4 FuseSOM   1.1.1   2022-11-09  2022-11-12
+ 5 FuseSOM   1.1.2   2022-11-15  2022-11-17
+ 6 GBScleanR 1.3.0   2022-11-01  2022-11-09
+ 7 GBScleanR 1.3.1   2022-11-10  2022-11-10
+ 8 GBScleanR 1.3.1   2022-11-10  2022-11-11
+ 9 GBScleanR 1.3.1   2022-11-10  2022-11-12
+10 GBScleanR 1.3.4   2022-11-14  2022-11-15
+

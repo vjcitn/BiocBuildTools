@@ -1,0 +1,44 @@
+source("update.gits.R", echo=TRUE)
+source("update.gits.R", echo=TRUE)
+ls()
+update_gits()
+source("update.gits.R", echo=TRUE)
+update_gits()
+source("update.gits.R", echo=TRUE)
+update_gits()
+ ?available.packages
+options()$repos
+x = available_packages()
+x = available.packages()
+class(x)
+dim(x)
+x[1,]
+allcran = x[,1]
+head(allcran)
+x[1:4,1:3]
+allcran = rownames(x)
+allcran_vers = x[,2]
+head(allcran_vers)
+ii = installed.packages()
+dim(ii)
+cranin = ii[intersect(rownames(ii),allcran)]
+ii[1,]
+cranvers_in = ii[cranin,3]
+rownames(ii)[1:4]
+length(cranin)
+cranin[1:4]
+allcran[1:4]
+dim(ii)
+intersect(rownames(ii), allcran) -> cin
+head(cin)
+length(cin)
+cranvers_in = ii[cin,3]
+head(cranvers_in)
+ls()
+oncran_vers = allcran_vers[names(cranvers_in)]
+sum(cranvers_in != oncran_vers)
+which(cranvers_in != oncran_vers)
+cranvers_in[259]
+oncran_vers[259]
+getwd()
+savehistory(file="check_cran.hist.txt")
