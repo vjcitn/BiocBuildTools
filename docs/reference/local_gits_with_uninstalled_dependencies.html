@@ -26,7 +26,7 @@ provide a list of packages for which dependencies are not installed"><!-- mathja
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiocBuildTools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.7</span>
       </span>
     </div>
 
@@ -35,13 +35,16 @@ provide a list of packages for which dependencies are not installed"><!-- mathja
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/cicd1.html">Continuous integration and delivery approaches for Bioconductor</a>
+    </li>
+    <li>
+      <a href="../articles/components.html">Components of ecosystem assessment with BiocBuildTools</a>
     </li>
     <li>
       <a href="../articles/gcp.html">Binary package production for GCP/AnVIL</a>
@@ -74,18 +77,21 @@ provide a list of packages for which dependencies are not installed</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">local_gits_with_uninstalled_dependencies</span><span class="op">(</span>
-  <span class="va">gitspath</span>,
-  dependencies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Depends"</span>, <span class="st">"Imports"</span>, <span class="st">"LinkingTo"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">local_gits_with_uninstalled_dependencies</span><span class="op">(</span></span>
+<span>  <span class="va">gitspath</span>,</span>
+<span>  dependencies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Depends"</span>, <span class="st">"Imports"</span>, <span class="st">"LinkingTo"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>gitspath</dt>
 <dd><p>character(1) path to cloned repos</p></dd>
+
+
 <dt>dependencies</dt>
 <dd><p>character vector of dependency types, probably don't need "Suggests"</p></dd>
+
 </dl></div>
 
   </div>
@@ -100,7 +106,7 @@ provide a list of packages for which dependencies are not installed</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

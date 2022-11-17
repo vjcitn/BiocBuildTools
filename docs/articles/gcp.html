@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiocBuildTools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.7</span>
       </span>
     </div>
 
@@ -49,7 +49,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -57,6 +57,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/cicd1.html">Continuous integration and delivery approaches for Bioconductor</a>
+    </li>
+    <li>
+      <a href="../articles/components.html">Components of ecosystem assessment with BiocBuildTools</a>
     </li>
     <li>
       <a href="../articles/gcp.html">Binary package production for GCP/AnVIL</a>
@@ -87,7 +90,7 @@
       <h1 data-toc-skip>Binary package production for GCP/AnVIL</h1>
                         <h4 data-toc-skip class="author">Vincent J. Carey, stvjc at channing.harvard.edu</h4>
             
-            <h4 data-toc-skip class="date">January 14, 2022</h4>
+            <h4 data-toc-skip class="date">November 16, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vjcitn/BiocBuildTools/blob/HEAD/vignettes/gcp.Rmd" class="external-link"><code>vignettes/gcp.Rmd</code></a></small>
       <div class="hidden name"><code>gcp.Rmd</code></div>
@@ -96,49 +99,49 @@
 
     
     
-<div class="section level1">
-<h1 id="basic-concepts">Basic concepts<a class="anchor" aria-label="anchor" href="#basic-concepts"></a>
-</h1>
+<div class="section level2">
+<h2 id="basic-concepts">Basic concepts<a class="anchor" aria-label="anchor" href="#basic-concepts"></a>
+</h2>
 <p>When R is used within a Docker container, users may confront the need to install additional packages. This can be time-consuming when compilation is required. To solve this, we have created a repository of container-based binary packages. Installing these during R sessions is fast and only involves file transfer.</p>
 </div>
-<div class="section level1">
-<h1 id="a-container-for-use-with-nhgri-anvil">A container for use with NHGRI AnVIL<a class="anchor" aria-label="anchor" href="#a-container-for-use-with-nhgri-anvil"></a>
-</h1>
+<div class="section level2">
+<h2 id="a-container-for-use-with-nhgri-anvil">A container for use with NHGRI AnVIL<a class="anchor" aria-label="anchor" href="#a-container-for-use-with-nhgri-anvil"></a>
+</h2>
 <p>We will use the workspace</p>
 <pre><code>https://app.terra.bio/#workspaces/landmarkanvil2/biocbinaries_apr2020</code></pre>
 <p>to run a custom environment with 64 CPU, 240 GB RAM, and 300 GB disk.</p>
 <p>We use the runtime container</p>
 <pre><code>us.gcr.io/anvil-gcr-public/anvil-rstudio-bioconductor:0.0.4</code></pre>
 </div>
-<div class="section level1">
-<h1 id="the-manifest-for-bioconductor-3-10-software-packages">The manifest for Bioconductor 3.10 software packages<a class="anchor" aria-label="anchor" href="#the-manifest-for-bioconductor-3-10-software-packages"></a>
-</h1>
+<div class="section level2">
+<h2 id="the-manifest-for-bioconductor-3-10-software-packages">The manifest for Bioconductor 3.10 software packages<a class="anchor" aria-label="anchor" href="#the-manifest-for-bioconductor-3-10-software-packages"></a>
+</h2>
 <p>We use the following function to generate a character vector with names of all software packages in a given release.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">get_bioc_packagelist</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">rel</span> <span class="op">=</span> <span class="st">"RELEASE_3_10"</span><span class="op">)</span> <span class="op">{</span>
- <span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"git clone git@git.bioconductor.org:admin/manifest"</span><span class="op">)</span>
- <span class="va">owd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>
- <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="st">"manifest"</span><span class="op">)</span>
- <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="va">owd</span><span class="op">)</span><span class="op">)</span>
- <span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"git checkout "</span>, <span class="va">rel</span><span class="op">)</span><span class="op">)</span>
- <span class="va">proc_software.txt</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="st">"software.txt"</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>  <span class="co"># first line is comment</span>
-  <span class="va">nn</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span>
-  <span class="va">tmp</span> <span class="op">=</span> <span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="va">nn</span><span class="op">]</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"Package: "</span>, <span class="st">""</span>, <span class="va">tmp</span><span class="op">)</span>
- <span class="op">}</span>
- <span class="fu">proc_software.txt</span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">get_bioc_packagelist</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">rel</span> <span class="op">=</span> <span class="st">"RELEASE_3_10"</span><span class="op">)</span> <span class="op">{</span></span>
+<span> <span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"git clone git@git.bioconductor.org:admin/manifest"</span><span class="op">)</span></span>
+<span> <span class="va">owd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span>
+<span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="st">"manifest"</span><span class="op">)</span></span>
+<span> <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="va">owd</span><span class="op">)</span><span class="op">)</span></span>
+<span> <span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"git checkout "</span>, <span class="va">rel</span><span class="op">)</span><span class="op">)</span></span>
+<span> <span class="va">proc_software.txt</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="st">"software.txt"</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>  <span class="co"># first line is comment</span></span>
+<span>  <span class="va">nn</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="va">tmp</span> <span class="op">=</span> <span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="va">nn</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"Package: "</span>, <span class="st">""</span>, <span class="va">tmp</span><span class="op">)</span></span>
+<span> <span class="op">}</span></span>
+<span> <span class="fu">proc_software.txt</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>We’ll generate the vector of package names and copy it to a google bucket for retrieval in our AnVIL session.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">software_3.10_2020_04_28</span> <span class="op">=</span> <span class="fu">get_bioc_packagelist</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">software_3.10_2020_04_28</span>, file<span class="op">=</span><span class="st">"software_3.10_2020_04_28.rda"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"gsutil cp software_3.10_2020_04_28.rda gs://biocbbs_2020a"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">software_3.10_2020_04_28</span> <span class="op">=</span> <span class="fu">get_bioc_packagelist</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">software_3.10_2020_04_28</span>, file<span class="op">=</span><span class="st">"software_3.10_2020_04_28.rda"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"gsutil cp software_3.10_2020_04_28.rda gs://biocbbs_2020a"</span><span class="op">)</span></span></code></pre></div>
 <p>We will use this vector as input to <code><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">BiocManager::install</a></code> with Ncpus = 45.</p>
 </div>
-<div class="section level1">
-<h1 id="tasks-within-anvil">Tasks within AnVIL<a class="anchor" aria-label="anchor" href="#tasks-within-anvil"></a>
-</h1>
+<div class="section level2">
+<h2 id="tasks-within-anvil">Tasks within AnVIL<a class="anchor" aria-label="anchor" href="#tasks-within-anvil"></a>
+</h2>
 <p>We set up the runtime based on</p>
 <pre><code>us.gcr.io/anvil-gcr-public/anvil-rstudio-bioconductor:0.0.4</code></pre>
 <p>In Rstudio, we retrieve the vector of package names.</p>
@@ -189,7 +192,7 @@ Operation completed over 1 objects/11.6 KiB.
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

@@ -1,3 +1,22 @@
+#' helper function for extracting BiocCheck outputs
+#' @param bcclist list of outputs of BiocCheck::BiocCheck
+#' @export
+bcclist_to_dataframes = function(bcclist) {
+     nms = names(bcclist)
+     allerrs = lapply(bcclist, "[[", "errors")
+     erlens = vapply(allerrs, nrow, integer(1))
+     allwrn = lapply(bcclist, "[[", "warnings")
+     warens = vapply(allwrn, nrow, integer(1))
+     ernms = rep(nms,erlens)
+     wrnms = rep(nms,warens)
+     errdf = do.call(rbind, allerrs)
+     wrndf = do.call(rbind, allwrn)
+     colnames(errdf) = c("type", "message")
+     colnames(wrndf) = c("type", "message")
+     errors = data.frame(package=ernms, type=errdf$type, message=errdf$message)
+     warnings = data.frame(package=wrnms, type=wrndf$type, message=wrndf$message)
+     list(errors=errors, warnings=warnings)
+   }
 
 #' use outputs of get_checks and get_bcc to build a database of all events of error or warning
 #' @param dbname character(1) a sqlite database name
@@ -24,22 +43,6 @@ build_sqlite_db = function( dbname = "chks.sqlite", rcmdcheck_obj_dir, bccheck_o
    }
    names(allbcc) = nms
    
-   bcclist_to_dataframes = function(bcclist) {
-     nms = names(bcclist)
-     allerrs = lapply(bcclist, "[[", "errors")
-     erlens = vapply(allerrs, nrow, integer(1))
-     allwrn = lapply(bcclist, "[[", "warnings")
-     warens = vapply(allwrn, nrow, integer(1))
-     ernms = rep(nms,erlens)
-     wrnms = rep(nms,warens)
-     errdf = do.call(rbind, allerrs)
-     wrndf = do.call(rbind, allwrn)
-     colnames(errdf) = c("type", "message")
-     colnames(wrndf) = c("type", "message")
-     errors = data.frame(package=ernms, type=errdf$type, message=errdf$message)
-     warnings = data.frame(package=wrnms, type=wrndf$type, message=wrndf$message)
-     list(errors=errors, warnings=warnings)
-   }
    aa = bcclist_to_dataframes(allbcc)
    
     update_status_db(dbname, "BcChkERR", newdf=aa$errors)

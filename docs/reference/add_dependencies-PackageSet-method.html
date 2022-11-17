@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiocBuildTools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.7</span>
       </span>
     </div>
 
@@ -32,13 +32,16 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/cicd1.html">Continuous integration and delivery approaches for Bioconductor</a>
+    </li>
+    <li>
+      <a href="../articles/components.html">Components of ecosystem assessment with BiocBuildTools</a>
     </li>
     <li>
       <a href="../articles/gcp.html">Binary package production for GCP/AnVIL</a>
@@ -69,18 +72,23 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for PackageSet</span>
-<span class="fu">add_dependencies</span><span class="op">(</span><span class="va">pkgset</span>, deps <span class="op">=</span> <span class="fu"><a href="full_dep_opts.html">full_dep_opts</a></span><span class="op">(</span><span class="op">)</span>, omit <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for PackageSet</span></span>
+<span><span class="fu">add_dependencies</span><span class="op">(</span><span class="va">pkgset</span>, deps <span class="op">=</span> <span class="fu"><a href="full_dep_opts.html">full_dep_opts</a></span><span class="op">(</span><span class="op">)</span>, omit <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>pkgset</dt>
 <dd><p>PackageSet instance</p></dd>
+
+
 <dt>deps</dt>
 <dd><p>character() vector of dependency types (e.g., c("Imports", "Depends")); defaults to <code><a href="full_dep_opts.html">full_dep_opts()</a></code></p></dd>
+
+
 <dt>omit</dt>
 <dd><p>character() vector of 'Depends' options to omit -- for example (default) "R"</p></dd>
+
 </dl></div>
 
   </div>
@@ -95,7 +103,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

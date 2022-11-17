@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiocBuildTools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.7</span>
       </span>
     </div>
 
@@ -32,13 +32,16 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/cicd1.html">Continuous integration and delivery approaches for Bioconductor</a>
+    </li>
+    <li>
+      <a href="../articles/components.html">Components of ecosystem assessment with BiocBuildTools</a>
     </li>
     <li>
       <a href="../articles/gcp.html">Binary package production for GCP/AnVIL</a>
@@ -69,17 +72,22 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">build1_with_buildsink</span><span class="op">(</span><span class="va">srcpath</span>, dest <span class="op">=</span> <span class="st">"."</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">build1_with_buildsink</span><span class="op">(</span><span class="va">srcpath</span>, dest <span class="op">=</span> <span class="st">"."</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>srcpath</dt>
 <dd><p>character(1) path to source folder for a package</p></dd>
+
+
 <dt>dest</dt>
 <dd><p>character(1) destination folder</p></dd>
+
+
 <dt>...</dt>
 <dd><p>pass to pkgbuild::build</p></dd>
+
 </dl></div>
 
   </div>
@@ -94,7 +102,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

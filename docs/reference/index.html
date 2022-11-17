@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiocBuildTools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.7</span>
       </span>
     </div>
 
@@ -32,13 +32,16 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/cicd1.html">Continuous integration and delivery approaches for Bioconductor</a>
+    </li>
+    <li>
+      <a href="../articles/components.html">Components of ecosystem assessment with BiocBuildTools</a>
     </li>
     <li>
       <a href="../articles/gcp.html">Binary package production for GCP/AnVIL</a>
@@ -71,6 +74,10 @@
         </td>
         <td><p>constructor for PackageSet instances</p></td>
       </tr><tr><td>
+          <p><code><a href="absent.html">absent()</a></code> </p>
+        </td>
+        <td><p>list packages absent from current installation</p></td>
+      </tr><tr><td>
           <p><code><a href="add_dependencies-PackageSet-method.html">add_dependencies(<i>&lt;PackageSet&gt;</i>)</a></code> </p>
         </td>
         <td><p>method for adding dependencies to PackageSet as determined by BiocPkgTools</p></td>
@@ -80,13 +87,13 @@
         <td><p>not exported, rely instead on rcmdcheck
 do check_built and clean up</p></td>
       </tr><tr><td>
-          <p><code><a href="bcc_to_dataframes.html">bcc_to_dataframes()</a></code> </p>
+          <p><code><a href="bcclist_to_dataframes.html">bcclist_to_dataframes()</a></code> </p>
         </td>
-        <td><p>produce list of data.frames for storage of BiocCheck::BiocCheck results in SQLite</p></td>
+        <td><p>helper function for extracting BiocCheck outputs</p></td>
       </tr><tr><td>
-          <p><code><a href="bioc_3.10_software_2020.03.17.html">bioc_3.10_software_2020.03.17</a></code> </p>
+          <p><code><a href="bco2df.html">bco2df()</a></code> </p>
         </td>
-        <td><p>a vector of package names needed for a fairly complete BBS run, 17 march 2020</p></td>
+        <td><p>convert BiocCheck output (just error and warning) to list of data.frames</p></td>
       </tr><tr><td>
           <p><code><a href="bioc_coreset.html">bioc_coreset()</a></code> </p>
         </td>
@@ -96,10 +103,6 @@ do check_built and clean up</p></td>
         </td>
         <td><p>get vector of Bioc software package names</p></td>
       </tr><tr><td>
-          <p><code><a href="browse_checks.html">browse_checks()</a></code> </p>
-        </td>
-        <td><p>developer report on package check process in shiny</p></td>
-      </tr><tr><td>
           <p><code><a href="build1.html">build1()</a></code> </p>
         </td>
         <td><p>prepare and build a package tarball, not exported because we use build1_with_buildsink to capture log</p></td>
@@ -108,17 +111,25 @@ do check_built and clean up</p></td>
         </td>
         <td><p>run build1 and capture the R CMD build log</p></td>
       </tr><tr><td>
-          <p><code><a href="cov_tab_demo.html">cov_tab_demo</a></code> </p>
+          <p><code><a href="build_sqlite_db.html">build_sqlite_db()</a></code> </p>
         </td>
-        <td><p>a list of covr::package_coverage results, thinned for demonstration purposes, produced dec 2019</p></td>
+        <td><p>use outputs of get_checks and get_bcc to build a database of all events of error or warning</p></td>
+      </tr><tr><td>
+          <p><code><a href="combine_status_dbs.html">combine_status_dbs()</a></code> </p>
+        </td>
+        <td><p>add records from 'incoming' database to 'target' database</p></td>
       </tr><tr><td>
           <p><code><a href="demo_bcchk_out.html">demo_bcchk_out</a></code> </p>
         </td>
         <td><p>a list of BiocCheck::BiocCheck results for demonstration purposes, produced nov 2020</p></td>
       </tr><tr><td>
-          <p><code><a href="demo_rcmdchk_out.html">demo_rcmdchk_out</a></code> </p>
+          <p><code><a href="demo_rcmdcheck_out.html">demo_rcmdcheck_out</a></code> </p>
         </td>
-        <td><p>a list of rcmdcheck::rcmdcheck results for demonstration purposes, produced dec 2019</p></td>
+        <td><p>a list of rcmdcheck::rcmdcheck results for demonstration purposes, produced nov 2022</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-bco2df.html">.bco2df()</a></code> </p>
+        </td>
+        <td><p>helper for bco2df</p></td>
       </tr><tr><td>
           <p><code><a href="fulfill_deps.html">fulfill_deps()</a></code> </p>
         </td>
@@ -128,9 +139,17 @@ do check_built and clean up</p></td>
         </td>
         <td><p>a vector listing the key dependencies with correct orthography</p></td>
       </tr><tr><td>
-          <p><code><a href="get_pnet.html">get_pnet()</a></code> </p>
+          <p><code><a href="get_bcc.html">get_bcc()</a></code> </p>
         </td>
-        <td><p>use pkgnet to analyze a source folder (including covr statistics)</p></td>
+        <td><p>use bco2df to acquire limited data frames from BiocCheck applied to packages</p></td>
+      </tr><tr><td>
+          <p><code><a href="get_checks.html">get_checks()</a></code> </p>
+        </td>
+        <td><p>run rcmdcheck on all sources associated with a PackageSet and drop the RDS outputs in a folder</p></td>
+      </tr><tr><td>
+          <p><code><a href="get_checks2.html">get_checks2()</a></code> </p>
+        </td>
+        <td><p>run rcmdcheck and BiocCheck on all sources associated with a PackageSet and drop the RDS outputs in separate folders</p></td>
       </tr><tr><td>
           <p><code><a href="getpk.html">getpk()</a></code> </p>
         </td>
@@ -139,6 +158,10 @@ do check_built and clean up</p></td>
           <p><code><a href="installed_r.html">installed_r</a></code> </p>
         </td>
         <td><p>a vector of package names needed for a fairly complete BBS run, jul 7 2019</p></td>
+      </tr><tr><td>
+          <p><code><a href="last_commit_date.html">last_commit_date()</a></code> <code><a href="last_commit_date.html">last_commit_date()</a></code> </p>
+        </td>
+        <td><p>use gert to get last commit date for a repo</p></td>
       </tr><tr><td>
           <p><code><a href="local_gits_behind_bioc.html">local_gits_behind_bioc()</a></code> </p>
         </td>
@@ -150,45 +173,21 @@ the one reported by BiocPkgTools::biocPkgList</p></td>
         <td><p>not clear that this is needed
 provide a list of packages for which dependencies are not installed</p></td>
       </tr><tr><td>
-          <p><code><a href="make_pnet_object.html">make_pnet_object()</a></code> </p>
-        </td>
-        <td><p>make a serialized collection of pkgnet reports</p></td>
-      </tr><tr><td>
           <p><code><a href="populate_local_gits.html">populate_local_gits()</a></code> </p>
         </td>
         <td><p>use git via BiocBBSpack::getpk to retrieve sources into a folder</p></td>
       </tr><tr><td>
-          <p><code><a href="print.BBT_pkgnet.html">print(<i>&lt;BBT_pkgnet&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>compact view of a pkgnet list</p></td>
-      </tr><tr><td>
-          <p><code><a href="process_artifacts.html">process_artifacts()</a></code> </p>
-        </td>
-        <td><p>process outputs of tbchecks and get_pnet to run browse_checks</p></td>
-      </tr><tr><td>
-          <p><code><a href="rcc_to_dataframes.html">rcc_to_dataframes()</a></code> </p>
+          <p><code><a href="rcclist_to_dataframes.html">rcclist_to_dataframes()</a></code> </p>
         </td>
         <td><p>produce list of data.frames for storage of R CMD check results in SQLite</p></td>
-      </tr><tr><td>
-          <p><code><a href="safe_rcmdcheck.html">safe_rcmdcheck()</a></code> </p>
-        </td>
-        <td><p>deal with errors at <em>build</em> stage when attempting to check</p></td>
-      </tr><tr><td>
-          <p><code><a href="soft_021520.html">soft_021520</a></code> </p>
-        </td>
-        <td><p>a vector of package names needed for a fairly complete BBS run, 15 feb 2020</p></td>
-      </tr><tr><td>
-          <p><code><a href="soft_2020_04_20.html">soft_2020_04_20</a></code> </p>
-        </td>
-        <td><p>a vector of package names needed for a fairly complete BBS run, 15 feb 2020</p></td>
       </tr><tr><td>
           <p><code><a href="status_db_init.html">status_db_init()</a></code> </p>
         </td>
         <td><p>initialize a status database</p></td>
       </tr><tr><td>
-          <p><code><a href="tbcheck.html">tbcheck()</a></code> </p>
+          <p><code><a href="update_gits.html">update_gits()</a></code> </p>
         </td>
-        <td><p>check an R package tarball</p></td>
+        <td><p>attempt to identify packages that have had pushes since last collected</p></td>
       </tr><tr><td>
           <p><code><a href="update_status_db.html">update_status_db()</a></code> </p>
         </td>
@@ -206,7 +205,7 @@ provide a list of packages for which dependencies are not installed</p></td>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

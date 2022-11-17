@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiocBuildTools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.7</span>
       </span>
     </div>
 
@@ -32,13 +32,16 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/cicd1.html">Continuous integration and delivery approaches for Bioconductor</a>
+    </li>
+    <li>
+      <a href="../articles/components.html">Components of ecosystem assessment with BiocBuildTools</a>
     </li>
     <li>
       <a href="../articles/gcp.html">Binary package production for GCP/AnVIL</a>
@@ -69,15 +72,22 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PackageSet</span><span class="op">(</span><span class="va">cvec</span>, biocversion <span class="op">=</span> <span class="st">"3.11"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PackageSet</span><span class="op">(</span><span class="va">cvec</span>, biocversion <span class="op">=</span> <span class="st">"3.16"</span>, branchname <span class="op">=</span> <span class="st">"RELEASE_3_16"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>cvec</dt>
 <dd><p>character() vector</p></dd>
+
+
 <dt>biocversion</dt>
-<dd><p>character(1) defaulting to "3.11"</p></dd>
+<dd><p>character(1) defaulting to "3.16"</p></dd>
+
+
+<dt>branchname</dt>
+<dd><p>character(1)</p></dd>
+
 </dl></div>
     <div id="note">
     <h2>Note</h2>
@@ -85,6 +95,33 @@
 found in BiocPkgTools::biocPkgList() result</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ps</span> <span class="op">=</span> <span class="fu">PackageSet</span><span class="op">(</span><span class="fu"><a href="bioc_coreset.html">bioc_coreset</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required namespace: BiocPkgTools</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'getOption("repos")' replaces Bioconductor standard repositories, see</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> '?repositories' for details</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> replacement repositories:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     CRAN: https://cloud.r-project.org</span>
+<span class="r-in"><span><span class="va">ps</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BiocBBSpack PackageSet instance.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  There are 4 packages listed (Bioconductor version 3.16).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  There are 0 unique dependencies listed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Branch name: RELEASE_3_16</span>
+<span class="r-in"><span><span class="va">ps</span> <span class="op">=</span> <span class="fu"><a href="add_dependencies-PackageSet-method.html">add_dependencies</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'getOption("repos")' replaces Bioconductor standard repositories, see</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> '?repositories' for details</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> replacement repositories:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     CRAN: https://cloud.r-project.org</span>
+<span class="r-in"><span><span class="va">ps</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BiocBBSpack PackageSet instance.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  There are 4 packages listed (Bioconductor version 3.16).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  There are 27 unique dependencies listed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Branch name: RELEASE_3_16</span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
@@ -97,7 +134,7 @@ found in BiocPkgTools::biocPkgList() result</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
