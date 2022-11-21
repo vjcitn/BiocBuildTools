@@ -11,10 +11,12 @@ bcclist_to_dataframes = function(bcclist) {
      wrnms = rep(nms,warens)
      errdf = do.call(rbind, allerrs)
      wrndf = do.call(rbind, allwrn)
-     colnames(errdf) = c("type", "message")
-     colnames(wrndf) = c("type", "message")
-     errors = data.frame(package=ernms, type=errdf$type, message=errdf$message)
-     warnings = data.frame(package=wrnms, type=wrndf$type, message=wrndf$message)
+     colnames(errdf)[1:2] = c("type", "message")
+     colnames(wrndf)[1:2] = c("type", "message")
+     errors = data.frame(package=ernms, type=errdf$type, message=errdf$message,
+          commit_date=errdf$commit_date, check_date = errdf$check_date)
+     warnings = data.frame(package=wrnms, type=wrndf$type, message=wrndf$message,
+          commit_date=errdf$commit_date, check_date = errdf$check_date)
      list(errors=errors, warnings=warnings)
    }
 

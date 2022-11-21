@@ -29,7 +29,10 @@ test_that(
   curwd = getwd()
   td = tempdir()
   setwd(td)
-  getpk("graph")
+  if (!dir.exists("graph")){
+   unlink("graph", recursive=TRUE)
+   getpk("graph")
+   }
   expect_true(dir.exists("graph"))
   expect_true(file.exists("graph/DESCRIPTION"))
   bb = build1_with_buildsink("graph", ".")
@@ -77,9 +80,43 @@ test_that("sqlite builds", {
    tsql = tempfile("tmp.sqlite")
    build_sqlite_db(tsql, rcmd=chkdest, bcc=bobdest)
    expect_true(file.exists(tsql))
-   expect_error(build_sqlite_db(tsql, rcmd=chkdest, bcc=bobdest))
+   expect_error(build_sqlite_db(tsql, rcmd=chkdest, bcc=bobdest))  # did not allow overwrite
   # rm(chkdest)
   # rm(bdest)
   # rm(bobdest)
 })
    
+
+context("examine expansion of bcclist_to_dataframes")
+
+test_that("bcclist behaves properly with dates", {
+
+#   bcclist_to_dataframes <- function(bcclist) {
+#        nms = names(bcclist)
+#        allerrs = lapply(bcclist, "[[", "errors")
+#        erlens = vapply(allerrs, nrow, integer(1))
+#        allwrn = lapply(bcclist, "[[", "warnings")
+#        warens = vapply(allwrn, nrow, integer(1))
+#        ernms = rep(nms, erlens)
+#        wrnms = rep(nms, warens)
+#        errdf = do.call(rbind, allerrs)
+#        wrndf = do.call(rbind, allwrn)
+#        colnames(errdf)[1:2] = c("type", "message")
+#        colnames(wrndf)[1:2] = c("type", "message")
+#        errors = data.frame(package = ernms, type = errdf$type,
+#            message = errdf$message, commit_date=errdf$commit_date, check_date = errdf$check_date)
+#        warnings = data.frame(package = wrnms, type = wrndf$type,
+#            message = wrndf$message, commit_date=errdf$commit_date, check_date = errdf$check_date)
+#        list(errors = errors, warnings = warnings)
+#    }
+ 
+   z = lapply(dir(bobdest, full=TRUE), readRDS)
+   nms = c("eds", "parody", "vsn")
+   names(z) = nms
+   dfs = bcclist_to_dataframes(z)
+   print(lapply(dfs, dim))
+   expect_true(inherits(dfs[[1]], "data.frame"))
+   expect_true(ncol(dfs[[1]])==5L)
+})
+
+
