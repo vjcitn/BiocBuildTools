@@ -69,13 +69,14 @@ test_that("sqlite builds", {
    spar = SnowParam(3)
    register(spar)
    
-   get_checks(ps, sources.folder=td, checks.destination=chkdest, 
+   get_checks2(ps, sources.folder=td, checks.destination=chkdest, 
+       bcchecks.destination=bdest, bcobj.destination=bobdest,
        BPOPTIONS=bpoptions(exports=c("chkdest", "bdest", "bobdest")))
    expect_true(length(dir(chkdest))>0)
    
-   get_bcc(sources.folder=td, bcchecks.destination=bdest, bcobj.destination=bobdest,
-      BPOPTIONS=bpoptions(exports=c("chkdest", "bdest", "bobdest")))
-   expect_true(length(dir(bobdest))>0)
+#   get_bcc(sources.folder=td, bcchecks.destination=bdest, bcobj.destination=bobdest,
+#      BPOPTIONS=bpoptions(exports=c("chkdest", "bdest", "bobdest")))
+#   expect_true(length(dir(bobdest))>0)
   # 
    tsql = tempfile("tmp.sqlite")
    build_sqlite_db(tsql, rcmd=chkdest, bcc=bobdest)
@@ -91,25 +92,6 @@ context("examine expansion of bcclist_to_dataframes")
 
 test_that("bcclist behaves properly with dates", {
 
-#   bcclist_to_dataframes <- function(bcclist) {
-#        nms = names(bcclist)
-#        allerrs = lapply(bcclist, "[[", "errors")
-#        erlens = vapply(allerrs, nrow, integer(1))
-#        allwrn = lapply(bcclist, "[[", "warnings")
-#        warens = vapply(allwrn, nrow, integer(1))
-#        ernms = rep(nms, erlens)
-#        wrnms = rep(nms, warens)
-#        errdf = do.call(rbind, allerrs)
-#        wrndf = do.call(rbind, allwrn)
-#        colnames(errdf)[1:2] = c("type", "message")
-#        colnames(wrndf)[1:2] = c("type", "message")
-#        errors = data.frame(package = ernms, type = errdf$type,
-#            message = errdf$message, commit_date=errdf$commit_date, check_date = errdf$check_date)
-#        warnings = data.frame(package = wrnms, type = wrndf$type,
-#            message = wrndf$message, commit_date=errdf$commit_date, check_date = errdf$check_date)
-#        list(errors = errors, warnings = warnings)
-#    }
- 
    z = lapply(dir(bobdest, full=TRUE), readRDS)
    nms = c("eds", "parody", "vsn")
    names(z) = nms

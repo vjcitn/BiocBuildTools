@@ -6,6 +6,7 @@ bcc_process_package_path = function(x, bcchecks.destination, bcobj.destination) 
         tmpans = try(BiocCheck::BiocCheck(x, checkDir = bcchecks.destination))
         attr(tmpans, "last_commit_date") <- last_commit_date(x)
         attr(tmpans, "check_date") <- Sys.time()
+        attr(tmpans, "pkgversion") <- tmpans$metadata$PackageVersion
         dest = paste0(bcobj.destination, "/", paste0(basename(x), 
             "_chk.rds"))
         if (inherits(tmpans, "try-error")) {
@@ -23,6 +24,7 @@ rcc_process_package_path = function(x, checks.destination) {
           futile.logger::flog.error(paste0("rcmdcheck 'x' = ", x))
           attr(z, "last_commit_date") <- last_commit_date(x)
           attr(z, "check_date") <- Sys.time()
+          attr(z, "pkgversion") <- z$version
           saveRDS(z, paste0(checks.destination, "/", basename(x), "_chk.rds"))
           NULL
           }
