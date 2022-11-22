@@ -43,6 +43,14 @@ last_commit_date = function(repo) {
 #' @param checks.destination path to folder holding RDS of rcmdcheck output
 #' @param BPPARAM defaults to bpparam()
 #' @param BPOPTIONS defaults to bpoptions()
+#' @examples
+#' ps = PackageSet("parody")
+#' tf = tempfile()
+#' td = dir.create(tf)
+#' populate_local_gits(ps, tf)
+#' dir.create(rcdest <- tempfile("rcd"))
+#' m = get_checks(ps, tf, rcdest)
+#' dir(rcdest, full=TRUE)
 #' @export
 get_checks = function(pkgset, sources.folder, checks.destination,
    BPPARAM=bpparam(), BPOPTIONS=bpoptions()) {
@@ -64,6 +72,7 @@ get_checks = function(pkgset, sources.folder, checks.destination,
           futile.logger::flog.error(paste0("'x' = ", x))
           attr(z, "last_commit_date") <- last_commit_date(x)
           attr(z, "check_date") <- Sys.time()
+          attr(z, "pkgversion") <- z$version
           saveRDS(z, paste0(checks.destination, "/", basename(x), "_chk.rds"))
           NULL
           }, BPPARAM=BPPARAM, BPOPTIONS=BPOPTIONS)

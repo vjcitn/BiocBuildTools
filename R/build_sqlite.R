@@ -1,5 +1,9 @@
 #' helper function for extracting BiocCheck outputs
 #' @param bcclist list of outputs of BiocCheck::BiocCheck
+#' @examples
+#' data(demo_bcchk_out)
+#' bl = bcclist_to_dataframes(demo_bcchk_out)
+#' sapply(bl, dim)
 #' @export
 bcclist_to_dataframes = function(bcclist) {
      nms = names(bcclist)
@@ -14,9 +18,9 @@ bcclist_to_dataframes = function(bcclist) {
      colnames(errdf)[1:2] = c("type", "message")
      colnames(wrndf)[1:2] = c("type", "message")
      errors = data.frame(package=ernms, type=errdf$type, message=errdf$message,
-          commit_date=errdf$commit_date, check_date = errdf$check_date)
+          commit_date=errdf$commit_date, check_date = errdf$check_date, version=errdf$version)
      warnings = data.frame(package=wrnms, type=wrndf$type, message=wrndf$message,
-          commit_date=errdf$commit_date, check_date = errdf$check_date)
+          commit_date=wrndf$commit_date, check_date = wrndf$check_date, version=wrndf$version)
      list(errors=errors, warnings=warnings)
    }
 
@@ -64,6 +68,8 @@ make_df_component = function(rcclist, component="notes") {
             date_string(attr(x, "last_commit_date")) }, character(1))
   date_check = vapply(rcclist, function(x) {
             date_string(attr(x, "check_date")) }, character(1))
+  pkv = vapply(rcclist, function(x) {
+            attr(x, "pkgversion") }, character(1))
   if (component == "description") {
    nol = lapply(nol, function(x) strsplit(x, "\n")[[1]])
   }
@@ -75,7 +81,8 @@ make_df_component = function(rcclist, component="notes") {
   npk = rep(pks, nls)
   ndcom = rep(date_commit, nls)
   ndche = rep(date_check, nls)
-  ans = data.frame(package=npk, tmp=unlist(nol), date_commit=ndcom, date_check=ndche, stringsAsFactors=FALSE)
+  ndpkv = rep(pkv, nls)
+  ans = data.frame(package=npk, tmp=unlist(nol), date_commit=ndcom, date_check=ndche, version=ndpkv, stringsAsFactors=FALSE)
   names(ans)[2] = component
   ans
 }
@@ -101,8 +108,10 @@ rcclist_to_dataframes = function(rcclist) {
             date_string(attr(x, "last_commit_date")) }, character(1))
   date_check = vapply(rcclist, function(x) {
             date_string(attr(x, "check_date")) }, character(1))
+  pkv = vapply(rcclist, function(x) {
+            attr(x, "pkgversion") }, character(1))
   list(basic = data.frame(package=pks, version=vers, date_commit=date_commit,
-         date_check=date_check, stringsAsFactors=FALSE),
+         date_check=date_check, version=pkv, stringsAsFactors=FALSE),
    notes = notes_df, warnings=warn_df, errors=err_df, inst=inst_df, desc=desc_df)
 }
 

@@ -26,3 +26,12 @@ get_checks(
 \description{
 run rcmdcheck on all sources associated with a PackageSet and drop the RDS outputs in a folder
 }
+\examples{
+ps = PackageSet("parody")
+tf = tempfile()
+td = dir.create(tf)
+populate_local_gits(ps, tf)
+dir.create(rcdest <- tempfile("rcd"))
+m = get_checks(ps, tf, rcdest)
+dir(rcdest, full=TRUE)
+}

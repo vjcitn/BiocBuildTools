@@ -12,3 +12,8 @@ bcclist_to_dataframes(bcclist)
 \description{
 helper function for extracting BiocCheck outputs
 }
+\examples{
+data(demo_bcchk_out)
+bl = bcclist_to_dataframes(demo_bcchk_out)
+sapply(bl, dim)
+}

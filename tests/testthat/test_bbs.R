@@ -66,7 +66,7 @@ test_that("sqlite builds", {
    dir.create(bobdest)
    
    library(BiocParallel)
-   spar = MulticoreParam(4)
+   spar = SnowParam(3)
    register(spar)
    
    get_checks(ps, sources.folder=td, checks.destination=chkdest, 
@@ -116,7 +116,7 @@ test_that("bcclist behaves properly with dates", {
    dfs = bcclist_to_dataframes(z)
    print(lapply(dfs, dim))
    expect_true(inherits(dfs[[1]], "data.frame"))
-   expect_true(ncol(dfs[[1]])==5L)
+   expect_true(ncol(dfs[[1]])==6L)
 })
 
 
