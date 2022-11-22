@@ -10,6 +10,7 @@ get_checks2(
   checks.destination,
   bcchecks.destination,
   bcobj.destination,
+  shuffle.pks = FALSE,
   BPPARAM = bpparam(),
   BPOPTIONS = bpoptions()
 )
@@ -24,6 +25,8 @@ get_checks2(
 \item{bcchecks.destination}{character(1) path to a writeable folder where BiocCheck logs are written}
 
 \item{bcobj.destination}{character(1) path to a folder where RDS files with data frames are written}
+
+\item{shuffle.pks}{logical(1) if TRUE the packages are randomized before checking}
 
 \item{BPPARAM}{defaults to bpparam()}
 

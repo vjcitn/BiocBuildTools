@@ -76,20 +76,23 @@ last_commit_date = function(repo) {
 #' @param checks.destination path to folder holding RDS of rcmdcheck output
 #' @param bcchecks.destination character(1) path to a writeable folder where BiocCheck logs are written
 #' @param bcobj.destination character(1) path to a folder where RDS files with data frames are written
+#' @param shuffle.pks logical(1) if TRUE the packages are randomized before checking
 #' @param BPPARAM defaults to bpparam()
 #' @param BPOPTIONS defaults to bpoptions()
 #' @export
 get_checks2 = function(pkgset, sources.folder, checks.destination,
-   bcchecks.destination, bcobj.destination,
+   bcchecks.destination, bcobj.destination, shuffle.pks=FALSE,
    BPPARAM=bpparam(), BPOPTIONS=bpoptions()) {
    
    allp = slot(pkgset, "pkgnames")
    N_SRCS = length(dir(sources.folder))
-   N_DONE = length(dir(checks.destination))
+   N_DONE = length(dir(bcobj.destination))
    done_pkgs = character()
-   if (N_DONE > 0) done_pkgs = gsub("_chk.rds", "", dir(checks.destination))
+   if (N_DONE > 0) done_pkgs = gsub("_chk.rds", "", dir(bcobj.destination))
    
    shuffle = function(x) sample(x, size=length(x), replace=FALSE)
+   if (!shuffle.pks) shuffle=force
+  
    
    todo <- setdiff(allp, done_pkgs)
      print(length(todo))
