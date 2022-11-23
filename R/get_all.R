@@ -3,7 +3,9 @@ bcc_process_package_path = function(x, bcchecks.destination, bcobj.destination) 
         print(x)
         futile.logger::flog.info(paste0("bioccheck 'x' = ", x))
         futile.logger::flog.error(paste0("bioccheck 'x' = ", x))
-        tmpans = try(BiocCheck::BiocCheck(x, checkDir = bcchecks.destination))
+        tmpans = try(BiocCheck::BiocCheck(x, checkDir = bcchecks.destination,
+          `no-check-deprecated`=TRUE, `no-check-formatting`=TRUE,
+           `no-check-CRAN`=TRUE, `no-check-bioc-help`=TRUE)) 
         attr(tmpans, "last_commit_date") <- last_commit_date(x)
         attr(tmpans, "check_date") <- Sys.time()
         attr(tmpans, "pkgversion") <- tmpans$metadata$PackageVersion
