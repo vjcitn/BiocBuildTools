@@ -78,14 +78,19 @@ get_bcc = function (sources.folder, bcchecks.destination, bcobj.destination,
         print(x)
         futile.logger::flog.info(paste0("'x' = ", x))
         futile.logger::flog.error(paste0("'x' = ", x))
+        dest = paste0(bcobj.destination, "/", paste0(basename(x),
+            "_chk.rds"))
+        prechk = try(pkgbuild::build(x))
+        if (inherits(prechk, "try-error")) {  # severe issue usually with latex
+             saveRDS(prechk, dest)
+             return(NULL)
+             }
         tmpans = try(BiocCheck::BiocCheck(x, checkDir = bcchecks.destination,
           `no-check-deprecated`=TRUE, `no-check-formatting`=TRUE,
            `no-check-CRAN`=TRUE, `no-check-bioc-help`=TRUE))
         attr(tmpans, "last_commit_date") <- last_commit_date(x)
         attr(tmpans, "check_date") <- Sys.time()
         attr(tmpans, "pkgversion") <- tmpans$metadata$PackageVersion
-        dest = paste0(bcobj.destination, "/", paste0(basename(x), 
-            "_chk.rds"))
         if (inherits(tmpans, "try-error")) {
             saveRDS(tmpans, dest)
             return(NULL)

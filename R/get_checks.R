@@ -67,6 +67,12 @@ get_checks = function(pkgset, sources.folder, checks.destination,
      print(length(todo))
      print(head(todo))
      tryall = bplapply(paste0(sources.folder, "/", shuffle(todo)), function(x) {
+          dest= paste0(checks.destination, "/", basename(x), "_chk.rds")
+          prechk = try(pkgbuild::build(x))
+          if (inherits(prechk, "try-error")) {  # severe issue usually with latex
+             saveRDS(prechk, dest)
+             return(NULL)
+             }
           futile.logger::flog.info(paste0("'x' = ", x))
           z = try(rcmdcheck::rcmdcheck(x, error_on="never")) # try(safe_rcmdcheck(x)); 
           futile.logger::flog.error(paste0("'x' = ", x))

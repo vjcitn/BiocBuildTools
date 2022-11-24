@@ -1,6 +1,6 @@
 Package: BiocBuildTools
 Title: Bioconductor software ecosystem building tools
-Version: 0.2.13
+Version: 0.2.15
 Authors@R: 
     person(given = "Vincent",
            family = "Carey",
@@ -46,4 +46,4 @@ URL: https://vjcitn.github.io/BiocBuildTools/
 BugReports: https://github.com/vjcitn/BiocBuildTools/issues/new/choose
 VignetteBuilder: knitr
 DockerImage: vjcitn/biocbuildtools:latest
-BiocViews: Infrastructure, Software
+biocViews: Infrastructure, Software
