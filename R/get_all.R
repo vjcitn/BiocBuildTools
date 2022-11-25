@@ -37,7 +37,7 @@ rcc_process_package_path = function(x, checks.destination) {
           futile.logger::flog.error(paste0("rcmdcheck 'x' = ", x))
           attr(z, "last_commit_date") <- last_commit_date(x)
           attr(z, "check_date") <- Sys.time()
-          attr(z, "pkgversion") <- z$version
+          attr(z, "pkgversion") <- try(z$version)
           saveRDS(z, paste0(checks.destination, "/", basename(x), "_chk.rds"))
           NULL
           }
