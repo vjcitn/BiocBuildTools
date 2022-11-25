@@ -15,7 +15,7 @@ bcc_process_package_path = function(x, bcchecks.destination, bcobj.destination) 
            `no-check-CRAN`=TRUE, `no-check-bioc-help`=TRUE)) 
         attr(tmpans, "last_commit_date") <- last_commit_date(x)
         attr(tmpans, "check_date") <- Sys.time()
-        attr(tmpans, "pkgversion") <- tmpans$metadata$PackageVersion
+        attr(tmpans, "pkgversion") <- try(tmpans$metadata$PackageVersion)
         if (inherits(tmpans, "try-error")) {
             saveRDS(tmpans, dest)
             return(NULL)
