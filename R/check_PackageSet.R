@@ -19,13 +19,15 @@
 #' pset = PackageSet(c("parody", "eds"))
 #' srcdir = tempdir("demo_srcs")
 #' spar = BiocParallel::SnowParam(2)
-#' bplog(spar) = TRUE
-#' bpstopOnError(spar) = FALSE
+#' BiocParallel::bplog(spar) = TRUE
+#' BiocParallel::bpstopOnError(spar) = FALSE
+#' BiocParallel::bpexportvariables(spar) = TRUE
+#' BiocParallel::bpexportglobals(spar) = TRUE
 #' dir.create(ldir <- tempdir("chkps_logs"))
 #' system(paste("chmod 777", ldir))
-#' bplogdir(spar) = tempdir("chkps_logs")
+#' BiocParallel::bplogdir(spar) = tempdir("chkps_logs")
 #' cptry = check_PackageSet(pset, srcdir=srcdir, BPPARAM=spar,
-#' BPOPTIONS=list(exports=c("chkdest", "bdest", "bobdest")))
+#' BPOPTIONS=BiocParallel::bpoptions(exports=c("chkdest", "bdest", "bobdest")))
 #' cptry
 #' @export
 check_PackageSet = function(pset, srcdir, update_sources=FALSE, 
@@ -46,13 +48,13 @@ check_PackageSet = function(pset, srcdir, update_sources=FALSE,
       }
    
    if (!dir.exists(prefix)) dir.create(prefix)
-   chkdest = paste0(prefix, "/rchk")
+   chkdest <<- paste0(prefix, "/rchk")
    if (!dir.exists(chkdest)) dir.create(chkdest)
    
-   bdest = paste0(prefix, "/bchk")
+   bdest <<- paste0(prefix, "/bchk")
    if (!dir.exists(bdest)) dir.create(bdest)
    
-   bobdest = paste0(prefix, "/bobdest")
+   bobdest <<- paste0(prefix, "/bobdest")
    if (!dir.exists(bobdest)) dir.create(bobdest)
  
    chk = ""

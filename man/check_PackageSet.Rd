@@ -50,12 +50,14 @@ The function will test Sys.getenv("CI") to avoid a tcltk query from knitr.
 pset = PackageSet(c("parody", "eds"))
 srcdir = tempdir("demo_srcs")
 spar = BiocParallel::SnowParam(2)
-bplog(spar) = TRUE
-bpstopOnError(spar) = FALSE
+BiocParallel::bplog(spar) = TRUE
+BiocParallel::bpstopOnError(spar) = FALSE
+BiocParallel::bpexportvariables(spar) = TRUE
+BiocParallel::bpexportglobals(spar) = TRUE
 dir.create(ldir <- tempdir("chkps_logs"))
 system(paste("chmod 777", ldir))
-bplogdir(spar) = tempdir("chkps_logs")
+BiocParallel::bplogdir(spar) = tempdir("chkps_logs")
 cptry = check_PackageSet(pset, srcdir=srcdir, BPPARAM=spar,
-BPOPTIONS=list(exports=c("chkdest", "bdest", "bobdest")))
+BPOPTIONS=BiocParallel::bpoptions(exports=c("chkdest", "bdest", "bobdest")))
 cptry
 }
