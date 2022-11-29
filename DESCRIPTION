@@ -1,6 +1,6 @@
 Package: BiocBuildTools
 Title: Bioconductor software ecosystem building tools
-Version: 0.2.18
+Version: 0.2.19
 Authors@R: 
     person(given = "Vincent",
            family = "Carey",
