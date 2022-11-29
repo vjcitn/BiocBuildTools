@@ -2,9 +2,11 @@
 
 library(RSQLite)
 library(BiocBuildTools)
+library(dplyr)
+library(dbplyr)
 
 
-con = RSQLite::dbConnect(RSQLite::SQLite(), "~/biocmaint.sqlite")
+con = RSQLite::dbConnect(RSQLite::SQLite(), "./biocnov28.sqlite")
 
 #[1] "BcChkERR"  "BcChkWARN" "basic"     "desc"      "errors"    "inst"     
 #[7] "notes"     "warnings" 
@@ -31,29 +33,25 @@ con = RSQLite::dbConnect(RSQLite::SQLite(), "~/biocmaint.sqlite")
 
 
     server = function(input, output) {
-       output$error = renderPrint({
+       output$error = DT::renderDataTable({
            tmp = RSQLite::dbGetQuery(con, paste0("select * from errors where package = '", input$pkchoice, "'"))
-           cat(tmp[[2]], sep="\n---\n")
+           as.data.frame(tmp)
            })
-       output$warn = renderPrint({
-           tmp = RSQLite::dbGetQuery(con, paste0("select * from warnings where package = '", input$pkchoice, "'"))
-           cat(tmp[[2]], sep="\n---\n")
+       output$warn = DT::renderDataTable({
+           as.data.frame(RSQLite::dbGetQuery(con, paste0("select * from warnings where package = '", input$pkchoice, "'")))
            })
-       output$notes = renderPrint({
-           tmp = RSQLite::dbGetQuery(con, paste0("select * from notes where package = '", input$pkchoice, "'"))
-           cat(tmp[[2]], sep="\n---\n")
+       output$notes = DT::renderDataTable({
+           as.data.frame(RSQLite::dbGetQuery(con, paste0("select * from notes where package = '", input$pkchoice, "'")))
            })
        output$desc = renderPrint({
            tmp = RSQLite::dbGetQuery(con, paste0("select * from desc where package = '", input$pkchoice, "'"))
            cat(tmp[[2]], sep="\n")
            })
        output$bcerr = DT::renderDataTable({
-           tmp = RSQLite::dbGetQuery(con, paste0("select * from BcChkERR where package = '", input$pkchoice, "'"))
-           tmp[, c("type", "message")]
+           as.data.frame(RSQLite::dbGetQuery(con, paste0("select * from BcChkERR where package = '", input$pkchoice, "'")))
            })
        output$bcwarn = DT::renderDataTable({
-           tmp = RSQLite::dbGetQuery(con, paste0("select * from BcChkWARN where package = '", input$pkchoice, "'"))
-           tmp[, c("type", "message")]
+           as.data.frame(RSQLite::dbGetQuery(con, paste0("select * from BcChkWARN where package = '", input$pkchoice, "'")))
            })
 
 fixit = function(df, col) { df[[col]] = gsub("\\n", "<br>", df[[col]]); df }
@@ -74,7 +72,7 @@ fixit = function(df, col) { df[[col]] = gsub("\\n", "<br>", df[[col]]); df }
           helpText("This app", 
              tags$ul(tags$li("uses rcmdcheck::rcmdcheck to parse and organize the check log to separate errors, warnings, and notes,"), 
                      tags$li("ingests the BiocCheck log and decorates it lightly to simplify discovery of adverse conditions,"),
-                     tags$li("formats results of covr::package_coverage to summarize test coverage (testthat or RUnit tests only) at the function level."),
+                     tags$li("[NOT YET:] formats results of covr::package_coverage to summarize test coverage (testthat or RUnit tests only) at the function level."),
                      tags$li("is based on a SQLite table generated using BiocBuildTools, which provides date-time of both the check event and the last commit to git")
               ) # end ul
              )  # end helpText
