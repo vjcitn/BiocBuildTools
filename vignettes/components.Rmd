@@ -1,0 +1,106 @@
+
+---
+title: "Components of ecosystem assessment with BiocBuildTools"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Components of ecosystem assessment with BiocBuildTools}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+```{r setup,echo=FALSE,results="hide"}
+suppressMessages({
+suppressPackageStartupMessages({
+library(BiocStyle)
+library(BiocBuildTools)
+library(BiocPkgTools)
+library(igraph)
+library(dplyr)
+library(magrittr)
+})
+})
+```
+
+# Overview
+
+In this vignette we illustrate the use of software to
+capture information from R CMD check and BiocCheck::BiocCheck
+in concise formats.
+
+# Harvesting check outputs
+
+## Acquire some source repos
+
+```{r getdat}
+td = tempdir()
+od = getwd()
+setwd(td)
+library(BiocBuildTools)
+ps = PackageSet(c("parody", "BiocFileCache"))
+getwd()
+system("mkdir gits")
+populate_local_gits(ps, "gits")
+```
+
+## Some helper software
+
+```{r helpers}
+date_string = function(x) as.character(as.Date(x, origin="1970-01-01"))
+last_commit_date = function(repo) {
+  ans = Sys.time() + NA # if gert not available, produce a classed NA
+  if (requireNamespace("gert")) ans = gert::git_log(repo=repo, max=1)$time
+  ans
+}
+```
+
+
+## Run R CMD check
+
+```{r gor,message=FALSE,results="hide"}
+setwd(td)
+rc = lapply(dir("gits", full=TRUE), function(x) {
+   ans = rcmdcheck::rcmdcheck(x,quiet=TRUE)
+   attr(ans, "last_commit_date") <- last_commit_date(x)
+   attr(ans, "check_date") <- Sys.time()
+   attr(ans, "pkgversion") <- ans$version
+   ans
+   })
+rdfs = rcclist_to_dataframes(rc)
+```
+
+## Run BiocCheck
+
+In this chunk we use BiocParallel to get separate
+processes for BiocCheck runs.  Without this we
+can see namespace detachment problems.
+```{r bor,message=FALSE}
+setwd(td)
+library(BiocParallel)
+register(SnowParam(2))  # gets around namespace detachment issue
+ini = dir("gits")
+bdfs = bplapply(dir("gits", full=TRUE), function(x) {
+   ans = BiocCheck::BiocCheck(x)
+   attr(ans, "last_commit_date") <- last_commit_date(x)
+   attr(ans, "check_date") <- Sys.time()
+   attr(ans, "pkgversion") <- ans$metadata$PackageVersion
+   bco2df(ans)
+   })
+names(bdfs) = ini
+```
+
+## Results
+
+```{r lkrds}
+names(rdfs)
+rdfs[1:4]
+```
+
+```{r lkbcs}
+bdfs
+```
