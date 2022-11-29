@@ -1,7 +1,9 @@
 
 library(BiocBuildTools)
 library(RSQLite)
-con = RSQLite::dbConnect(RSQLite::SQLite(), "~/biocmaint.sqlite")
+library(dplyr)
+library(dbplyr)
+con = RSQLite::dbConnect(RSQLite::SQLite(), "./biocnov28.sqlite")
 #suppressWarnings({
 #pk = readRDS(system.file("pkgnet/pnet.rds", package="BiocBuildTools"))
 #})
@@ -21,9 +23,9 @@ con = RSQLite::dbConnect(RSQLite::SQLite(), "~/biocmaint.sqlite")
          ),
         mainPanel(tabsetPanel(
          tabPanel("description", verbatimTextOutput("desc")),
-         tabPanel("Rerr", verbatimTextOutput("error")),
-         tabPanel("Rwarn", verbatimTextOutput("warn")),
-         tabPanel("Rnote", verbatimTextOutput("notes")),
+         tabPanel("Rerr", DT::dataTableOutput("error")),
+         tabPanel("Rwarn", DT::dataTableOutput("warn")),
+         tabPanel("Rnote", DT::dataTableOutput("notes")),
          tabPanel("BCerr", DT::dataTableOutput("bcerr")),
          tabPanel("BCwarn", DT::dataTableOutput("bcwarn")),
          tabPanel("summaries", 
