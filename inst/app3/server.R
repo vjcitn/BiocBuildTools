@@ -40,7 +40,7 @@ con = RSQLite::dbConnect(RSQLite::SQLite(), "./biocnov28.sqlite")
        output$warn = DT::renderDataTable({
            as.data.frame(RSQLite::dbGetQuery(con, paste0("select * from warnings where package = '", input$pkchoice, "'")))
            })
-       output$notes = renderDataTable({
+       output$notes = DT::renderDataTable({
            as.data.frame(RSQLite::dbGetQuery(con, paste0("select * from notes where package = '", input$pkchoice, "'")))
            })
        output$desc = renderPrint({
