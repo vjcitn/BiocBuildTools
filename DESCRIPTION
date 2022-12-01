@@ -1,6 +1,6 @@
 Package: BiocBuildTools
 Title: Bioconductor software ecosystem building tools
-Version: 0.2.21
+Version: 0.2.22
 Authors@R: 
     person(given = "Vincent",
            family = "Carey",
@@ -18,7 +18,7 @@ License: Artistic-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.2
-Depends: R (>= 4.0.3)
+Depends: R (>= 4.0.3), BiocParallel
 Suggests: 
     knitr,
     rmarkdown,
@@ -41,7 +41,7 @@ Imports:
     RSQLite,
     shiny,
     pkgnet, 
-    utils, futile.logger, BiocCheck, BiocParallel
+    utils, futile.logger, BiocCheck
 URL: https://vjcitn.github.io/BiocBuildTools/
 BugReports: https://github.com/vjcitn/BiocBuildTools/issues/new/choose
 VignetteBuilder: knitr

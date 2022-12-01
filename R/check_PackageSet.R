@@ -4,7 +4,7 @@
 #' @param srcdir character(1) path to folder that can receive all sources using BiocBuildTools::populate_local_gits
 #' @param update_sources logical(1) if TRUE, use update_gits to pull new changes in each package in srcdir
 #' @param prefix character(1) path to folder within which check artifacts are produced,
-#' will be created if nonexistent; defaults to `tempdir("checkPS")`
+#' will be created if nonexistent; defaults to `tempfile("checkPS")`
 #' @param BPPARAM instance of BiocParallelParam
 #' @param BPOPTIONS a list, see BiocParallel::bpoptions, defaults to empty list
 #' @param shuffle logical(1) if TRUE, the list of packages is randomly permuted to avoid always
@@ -14,24 +14,25 @@
 #' outputs of BiocBuildTools::get_checks2() and BiocBuildTools::build_sqlite_db() if these
 #' succeed.  In good circumstances this function is called for the side effect of creating
 #' the SQLite database
-#' @note The function will test Sys.getenv("CI") to avoid a tcltk query from knitr.
+#' @note The function will test Sys.getenv("CI") to avoid a tcltk query from knitr and will
+#' fail if it is not set.
 #' @examples
 #' pset = PackageSet(c("parody", "eds"))
-#' srcdir = tempdir("demo_srcs")
+#' srcdir = tempfile("demo_srcs")
+#' dir.create(srcdir)
 #' spar = BiocParallel::SnowParam(2)
 #' BiocParallel::bplog(spar) = TRUE
 #' BiocParallel::bpstopOnError(spar) = FALSE
 #' BiocParallel::bpexportvariables(spar) = TRUE
 #' BiocParallel::bpexportglobals(spar) = TRUE
-#' dir.create(ldir <- tempdir("chkps_logs"))
+#' dir.create(ldir <- tempfile("chkps_logs"))
 #' system(paste("chmod 777", ldir))
-#' BiocParallel::bplogdir(spar) = tempdir("chkps_logs")
-#' cptry = check_PackageSet(pset, srcdir=srcdir, BPPARAM=spar,
-#' BPOPTIONS=BiocParallel::bpoptions(exports=c("chkdest", "bdest", "bobdest")))
+#' BiocParallel::bplogdir(spar) = ldir
+#' cptry = check_PackageSet(pset, srcdir=srcdir, BPPARAM=spar)
 #' cptry
 #' @export
 check_PackageSet = function(pset, srcdir, update_sources=FALSE, 
-     prefix=tempdir("checkPS"), BPPARAM, BPOPTIONS=list(), shuffle=FALSE,
+     prefix=tempfile("checkPS"), BPPARAM, BPOPTIONS=list(), shuffle=FALSE,
      sqlite_target = paste0(prefix, "/test.sqlite")) {
    civ = Sys.getenv("CI")
    stopifnot(civ=="true")
@@ -61,7 +62,8 @@ check_PackageSet = function(pset, srcdir, update_sources=FALSE,
    dbatt = ""
    chk = try(get_checks2(ps, sources.folder=td, checks.destination=chkdest, 
       bcchecks.destination=bdest, bcobj.destination=bobdest, BPPARAM=BPPARAM,
-      BPOPTIONS=BPOPTIONS, shuffle=shuffle))
+      BPOPTIONS=c(BPOPTIONS, 
+         bpoptions(packages="BiocParallel", exportglobals=TRUE, exports=c("chkdest", "bdest", "bobdest"))), shuffle=shuffle))
    
    dbatt = try(build_sqlite_db(sqlite_target, rcmd=chkdest, bcc=bobdest))
    list(sqlite_target=sqlite_target, chk=chk, dbatt=dbatt)

@@ -1,27 +1,6 @@
 library(BiocBuildTools)
 
-#context("enumerate software packages")
-#
-#test_that(
-#  "BiocPkgTools functions to enumerate packages and dependencies", {
-#  ll = bioc_software_packagelist()
-#  expect_true(inherits(ll, "character"))
-#  expect_true(length(ll)>1700)
-#}) 
-
 context("try a build")
-
-#test_that(
-#  "getpk retrieves a source image of a package and build1 works", {
-#  curwd = getwd()
-#  td = tempdir()
-#  setwd(td)
-#  getpk("graph")
-#  expect_true(dir.exists("graph"))
-#  expect_true(file.exists("graph/DESCRIPTION"))
-#  bb = build1("graph", ".")
-#  setwd(curwd)
-#})
 
 
 test_that(
@@ -41,80 +20,30 @@ test_that(
 })
 
 
-test_that("sqlite builds", {
-   packs = c("parody", "vsn", "eds")
-   
-   library(BiocBuildTools)
-   civ = Sys.getenv("CI")
-   stopifnot(civ=="true")
-   
-   ps = PackageSet(packs, biocversion="3.16", branchname="master")
-   ps = add_dependencies(ps)
-   
-   td = tempfile("litdemo")
-   dir.create(td)
-   
-   populate_local_gits(ps, td)
-   
-   chkdest <<- tempfile("litrchks")
-   dir.create(chkdest)
-   
-   bdest <<- tempfile("litbcchks")
-   dir.create(bdest)
-   
-   bobdest <<- tempfile("litbobjs")
-   dir.create(bobdest)
-   
-   library(BiocParallel)
-   spar = SnowParam(3)
-   register(spar)
-   
-   get_checks2(ps, sources.folder=td, checks.destination=chkdest, 
-       bcchecks.destination=bdest, bcobj.destination=bobdest,
-       BPOPTIONS=bpoptions(exports=c("chkdest", "bdest", "bobdest")))
-   expect_true(length(dir(chkdest))>0)
-   
-#   get_bcc(sources.folder=td, bcchecks.destination=bdest, bcobj.destination=bobdest,
-#      BPOPTIONS=bpoptions(exports=c("chkdest", "bdest", "bobdest")))
-#   expect_true(length(dir(bobdest))>0)
-  # 
-   tsql = tempfile("tmp.sqlite")
-   build_sqlite_db(tsql, rcmd=chkdest, bcc=bobdest)
-   expect_true(file.exists(tsql))
-   expect_error(build_sqlite_db(tsql, rcmd=chkdest, bcc=bobdest))  # did not allow overwrite
-  # rm(chkdest)
-  # rm(bdest)
-  # rm(bobdest)
-})
-   
-
-context("examine expansion of bcclist_to_dataframes")
-
-test_that("bcclist behaves properly with dates", {
-
-   z = lapply(dir(bobdest, full=TRUE), readRDS)
-   nms = c("eds", "parody", "vsn")
-   names(z) = nms
-   dfs = bcclist_to_dataframes(z)
-   print(lapply(dfs, dim))
-   expect_true(inherits(dfs[[1]], "data.frame"))
-   expect_true(ncol(dfs[[1]])==6L)
-})
 
 context("test comprehensive build from PackageSet")
 
 test_that("check PackageSet works", {
  pset = PackageSet(c("parody", "eds"))
- srcdir = tempdir("demo_srcs")
+ srcdir = tempfile("demo_srcs")
+ dir.create(srcdir)
  spar = BiocParallel::SnowParam(2)
  BiocParallel::bplog(spar) = TRUE
  BiocParallel::bpstopOnError(spar) = FALSE
  BiocParallel::bpexportvariables(spar) = TRUE
  BiocParallel::bpexportglobals(spar) = TRUE
- dir.create(ldir <- tempdir("chkps_logs"))
+ dir.create(ldir <- tempfile("chkps_logs"))
  system(paste("chmod 777", ldir))
  BiocParallel::bplogdir(spar) = ldir
- cptry = check_PackageSet(pset, srcdir=srcdir, BPPARAM=spar,
- BPOPTIONS=BiocParallel::bpoptions(exports=c("chkdest", "bdest", "bobdest")))
+ cptry = check_PackageSet(pset, srcdir=srcdir, BPPARAM=spar)
  expect_true("sqlite_target" %in% names(cptry))
+#> library(RSQLite)
+#1/0 packages newly attached/loaded, see sessionInfo() for details.
+#> dbConnect(SQLite(), cptry$sqlite_target) -> con
+#> dbReadTable(con, "basic")
+#  package version date_commit date_check version.1
+#1     eds   1.0.0  2022-11-01 2022-12-01     1.0.0
+#2  parody  1.56.0  2022-11-01 2022-12-01    1.56.0
+ con = RSQLite::dbConnect(RSQLite::SQLite(), cptry$sqlite_target)
+ expect_true( nrow( RSQLite::dbReadTable(con, "basic") ) == 2 )
 })

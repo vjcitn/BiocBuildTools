@@ -8,7 +8,7 @@ check_PackageSet(
   pset,
   srcdir,
   update_sources = FALSE,
-  prefix = tempdir("checkPS"),
+  prefix = tempfile("checkPS"),
   BPPARAM,
   BPOPTIONS = list(),
   shuffle = FALSE,
@@ -23,7 +23,7 @@ check_PackageSet(
 \item{update_sources}{logical(1) if TRUE, use update_gits to pull new changes in each package in srcdir}
 
 \item{prefix}{character(1) path to folder within which check artifacts are produced,
-will be created if nonexistent; defaults to \code{tempdir("checkPS")}}
+will be created if nonexistent; defaults to \code{tempfile("checkPS")}}
 
 \item{BPPARAM}{instance of BiocParallelParam}
 
@@ -44,20 +44,21 @@ the SQLite database
 longrunning R CMD check and BiocCheck of every package in a packageset
 }
 \note{
-The function will test Sys.getenv("CI") to avoid a tcltk query from knitr.
+The function will test Sys.getenv("CI") to avoid a tcltk query from knitr and will
+fail if it is not set.
 }
 \examples{
 pset = PackageSet(c("parody", "eds"))
-srcdir = tempdir("demo_srcs")
+srcdir = tempfile("demo_srcs")
+dir.create(srcdir)
 spar = BiocParallel::SnowParam(2)
 BiocParallel::bplog(spar) = TRUE
 BiocParallel::bpstopOnError(spar) = FALSE
 BiocParallel::bpexportvariables(spar) = TRUE
 BiocParallel::bpexportglobals(spar) = TRUE
-dir.create(ldir <- tempdir("chkps_logs"))
+dir.create(ldir <- tempfile("chkps_logs"))
 system(paste("chmod 777", ldir))
-BiocParallel::bplogdir(spar) = tempdir("chkps_logs")
-cptry = check_PackageSet(pset, srcdir=srcdir, BPPARAM=spar,
-BPOPTIONS=BiocParallel::bpoptions(exports=c("chkdest", "bdest", "bobdest")))
+BiocParallel::bplogdir(spar) = ldir
+cptry = check_PackageSet(pset, srcdir=srcdir, BPPARAM=spar)
 cptry
 }
