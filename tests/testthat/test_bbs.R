@@ -101,4 +101,20 @@ test_that("bcclist behaves properly with dates", {
    expect_true(ncol(dfs[[1]])==6L)
 })
 
+context("test comprehensive build from PackageSet")
 
+test_that("check PackageSet works", {
+ pset = PackageSet(c("parody", "eds"))
+ srcdir = tempdir("demo_srcs")
+ spar = BiocParallel::SnowParam(2)
+ BiocParallel::bplog(spar) = TRUE
+ BiocParallel::bpstopOnError(spar) = FALSE
+ BiocParallel::bpexportvariables(spar) = TRUE
+ BiocParallel::bpexportglobals(spar) = TRUE
+ dir.create(ldir <- tempdir("chkps_logs"))
+ system(paste("chmod 777", ldir))
+ BiocParallel::bplogdir(spar) = ldir
+ cptry = check_PackageSet(pset, srcdir=srcdir, BPPARAM=spar,
+ BPOPTIONS=BiocParallel::bpoptions(exports=c("chkdest", "bdest", "bobdest")))
+ expect_true("sqlite_target" %in% names(cptry))
+})
