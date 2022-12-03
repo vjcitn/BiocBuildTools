@@ -5,11 +5,12 @@ bcc_process_package_path = function(x, bcchecks.destination, bcobj.destination) 
         futile.logger::flog.error(paste0("bioccheck 'x' = ", x))
         dest = paste0(bcobj.destination, "/", paste0(basename(x), 
             "_chk.rds"))
-        prechk = try(pkgbuild::build(x))
+        prechk = try(pkgbuild::build(x, clean_doc=TRUE))
         if (inherits(prechk, "try-error")) {  # severe issue usually with latex
              saveRDS(prechk, dest)
              return(NULL)
              }
+        unlink(prechk)
         tmpans = try(BiocCheck::BiocCheck(x, checkDir = bcchecks.destination,
           `no-check-deprecated`=TRUE, `no-check-formatting`=TRUE,
            `no-check-CRAN`=TRUE, `no-check-bioc-help`=TRUE)) 
@@ -28,12 +29,13 @@ bcc_process_package_path = function(x, bcchecks.destination, bcobj.destination) 
 rcc_process_package_path = function(x, checks.destination) {
           futile.logger::flog.info(paste0("rcmdcheck 'x' = ", x))
           dest= paste0(checks.destination, "/", basename(x), "_chk.rds")
-          prechk = try(pkgbuild::build(x))
+          prechk = try(pkgbuild::build(x, clean_doc=TRUE))
           if (inherits(prechk, "try-error")) {  # severe issue usually with latex
              saveRDS(prechk, dest)
              return(NULL)
              }
-          z = try(rcmdcheck::rcmdcheck(x, error_on="never")) # try(safe_rcmdcheck(x)); 
+          z = try(rcmdcheck::rcmdcheck(prechk, error_on="never")) # try(safe_rcmdcheck(x)); 
+          unlink(prechk)
           futile.logger::flog.error(paste0("rcmdcheck 'x' = ", x))
           attr(z, "last_commit_date") <- last_commit_date(x)
           attr(z, "check_date") <- Sys.time()

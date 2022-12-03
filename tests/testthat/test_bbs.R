@@ -1,23 +1,24 @@
 library(BiocBuildTools)
 
-context("try a build")
+#context("try a build")
 
 
-test_that(
-  "build1_with_buildsink produces build log", {
-  curwd = getwd()
-  td = tempdir()
-  setwd(td)
-  if (!dir.exists("graph")){
-   unlink("graph", recursive=TRUE)
-   getpk("graph")
-   }
-  expect_true(dir.exists("graph"))
-  expect_true(file.exists("graph/DESCRIPTION"))
-  bb = build1_with_buildsink("graph", ".")
-  expect_true(file.exists("graph.bldlog.txt"))
-  setwd(curwd)
-})
+# not used any more
+#test_that(
+#  "build1_with_buildsink produces build log", {
+#  curwd = getwd()
+#  td = tempdir()
+#  setwd(td)
+#  if (!dir.exists("graph")){
+#   unlink("graph", recursive=TRUE)
+#   getpk("graph")
+#   }
+#  expect_true(dir.exists("graph"))
+#  expect_true(file.exists("graph/DESCRIPTION"))
+#  bb = build1_with_buildsink("graph", ".")
+#  expect_true(file.exists("graph.bldlog.txt"))
+#  setwd(curwd)
+#})
 
 
 
