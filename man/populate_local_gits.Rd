@@ -19,6 +19,9 @@ invisibly, the list of folders created under gitspath
 \description{
 use git via BiocBBSpack::getpk to retrieve sources into a folder
 }
+\note{
+Will ignore packageset elements that already have folders in gitspath.
+}
 \examples{
 ps = PackageSet(bioc_coreset()) # small
 ps = add_dependencies(ps)

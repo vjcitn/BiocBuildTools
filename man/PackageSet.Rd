@@ -4,12 +4,12 @@
 \alias{PackageSet}
 \title{constructor for PackageSet instances}
 \usage{
-PackageSet(cvec, biocversion = "3.16", branchname = "RELEASE_3_16")
+PackageSet(cvec, biocversion = "3.17", branchname = "RELEASE_3_17")
 }
 \arguments{
 \item{cvec}{character() vector}
 
-\item{biocversion}{character(1) defaulting to "3.16"}
+\item{biocversion}{character(1) defaulting to "3.17"}
 
 \item{branchname}{character(1)}
 }
@@ -18,7 +18,9 @@ constructor for PackageSet instances
 }
 \note{
 Will issue message if some element of cvec is not
-found in BiocPkgTools::biocPkgList() result
+found in BiocPkgTools::biocPkgList() result.  In 2023 function elaborated
+to check all bioc 'repos': "BioCsoft", "BioCann", "BioCexp",
+"BioCworkflows"
 }
 \examples{
 ps = PackageSet(bioc_coreset())

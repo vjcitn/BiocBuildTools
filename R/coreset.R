@@ -21,19 +21,24 @@ setClass("PackageSet",
 #' constructor for PackageSet instances
 #' @importFrom methods new
 #' @param cvec character() vector
-#' @param biocversion character(1) defaulting to "3.16"
+#' @param biocversion character(1) defaulting to "3.17"
 #' @param branchname character(1)
 #' @note Will issue message if some element of cvec is not
-#' found in BiocPkgTools::biocPkgList() result
+#' found in BiocPkgTools::biocPkgList() result.  In 2023 function elaborated
+#' to check all bioc 'repos': "BioCsoft", "BioCann", "BioCexp",
+#'          "BioCworkflows"
 #' @examples
 #' ps = PackageSet(bioc_coreset())
 #' ps
 #' ps = add_dependencies(ps)
 #' ps
 #' @export
-PackageSet = function(cvec, biocversion="3.16", branchname="RELEASE_3_16") {
+PackageSet = function(cvec, biocversion="3.17", branchname="RELEASE_3_17") {
  if (!requireNamespace("BiocPkgTools")) stop("install BiocPkgTools to use this function")
- all_info = BiocPkgTools::biocPkgList(version=biocversion)
+ types = c("BioCsoft", "BioCann", "BioCexp", "BioCworkflows")
+ infoset = lapply(types, function(x) BiocPkgTools::biocPkgList(version=biocversion, repo=x)[,c("Package", "Version", "Depends")])
+ all_info = do.call(rbind, infoset)
+# all_info = BiocPkgTools::biocPkgList(version=biocversion)
  odd = setdiff(cvec, all_info$Package)
  if (length(odd)>0) message("Some elements of cvec are not in Bioconductor.")
  info = all_info[which(all_info$Package %in% cvec),]
@@ -87,6 +92,7 @@ setMethod("add_dependencies", "PackageSet",
 #' @param gitspath character(1) folder to be created if it does not exist
 #' @param \dots passed to getpk (might be useful for setting RELEASE_X_XX for git clone)
 #' @return invisibly, the list of folders created under gitspath
+#' @note Will ignore packageset elements that already have folders in gitspath.
 #' @examples
 #' ps = PackageSet(bioc_coreset()) # small
 #' ps = add_dependencies(ps)
@@ -101,7 +107,7 @@ populate_local_gits = function(pkgset, gitspath, ...) {
    on.exit(setwd(curd))
    setwd(gitspath)
    curbranch = pkgset@branchname
-   ans = lapply(pkgset@pkgnames, function(x) try(getpk(x, branch=curbranch, ...)))
+   ans = lapply(pkgset@pkgnames, function(x) if (!dir.exists(x)) try(getpk(x, branch=curbranch, ...)))
    chk = sapply(ans, inherits, "try-error")
    if (any(chk)) message("there was a try-error thrown; check contents of gitspath")
    invisible(dir(gitspath, full.names=TRUE))
