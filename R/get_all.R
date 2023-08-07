@@ -94,6 +94,7 @@ last_commit_date = function(repo) {
 #' @param shuffle.pks logical(1) if TRUE the packages are randomized before checking
 #' @param BPPARAM defaults to bpparam()
 #' @param BPOPTIONS defaults to bpoptions()
+#' @note returns NULL (if all artifacts are already present in destinations) or list of NULLs
 #' @export
 get_checks2 = function(pkgset, sources.folder, checks.destination,
    bcchecks.destination, bcobj.destination, shuffle.pks=FALSE,
@@ -110,6 +111,7 @@ get_checks2 = function(pkgset, sources.folder, checks.destination,
   
    
    todo <- setdiff(allp, done_pkgs)
+   if (length(todo)<1) return(NULL)
      print(length(todo))
      print(head(todo,50))
      tryall = bplapply(paste0(sources.folder, "/", shuffle(todo)), function(x) {

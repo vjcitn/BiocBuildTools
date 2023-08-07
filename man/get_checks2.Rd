@@ -35,3 +35,6 @@ get_checks2(
 \description{
 run rcmdcheck and BiocCheck on all sources associated with a PackageSet and drop the RDS outputs in separate folders
 }
+\note{
+returns NULL (if all artifacts are already present in destinations) or list of NULLs
+}
