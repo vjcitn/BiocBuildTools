@@ -1,0 +1,6 @@
+base = file.path("~", "REDO1")
+srcs_target = file.path(base, "CORE92")
+checks_target = file.path(base, "CORE92_CHECKSB")
+done = dir(checks_target, full.names=TRUE)
+done = gsub("_.*", "", basename(done))
+setdiff(bbsBuildArtifacts::core92(), done)
