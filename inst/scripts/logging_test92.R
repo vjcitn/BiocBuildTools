@@ -1,0 +1,28 @@
+N_CPUS_INST = 30
+library(BiocBuildTools)
+library(bbsBuildArtifacts)
+base = file.path("~", "REDO1")
+try(dir.create(base))
+srcs_target = file.path(base, "CORE92")
+checks_target = file.path(base, "CORE92_CHECKSB")
+bcchecks_target = file.path(base, "CORE92_BCCHECKSB")
+bcobs_target = file.path(base, "CORE92_BCOBSB")
+try(lapply(list(checks_target, bcchecks_target, bcobs_target), unlink, recursive=TRUE))
+try(lapply(list(srcs_target, checks_target, bcchecks_target, bcobs_target), dir.create))
+stopifnot(dir.exists(srcs_target))
+s92 = core92()
+c92 = PackageSet(core92())
+c92d = add_dependencies(c92)
+avail = dir(srcs_target, full.names=TRUE)
+if (length(avail)>0) stopifnot(all(basename(avail) %in% s92))
+if (length(avail)==0) populate_local_gits(c92d, srcs_target)
+BiocManager::install(s92, Ncpus=N_CPUS_INST, ask=FALSE, update=FALSE)
+library(BiocParallel)
+mypar = MulticoreParam(40)
+bplog(mypar) = TRUE
+try(dir.create(file.path(base, "mylogs2")))
+bplogdir(mypar) = file.path(base, "mylogs2")
+register(mypar)
+x = get_checks2(c92d, srcs_target, checks.destination = checks_target,
+   bcchecks.destination = bcchecks_target, bcobj.destination = bcobs_target,
+   BPOPTIONS = bpoptions(packages=c("pkgbuild", "rcmdcheck")))

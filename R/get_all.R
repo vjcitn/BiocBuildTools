@@ -115,6 +115,7 @@ get_checks2 = function(pkgset, sources.folder, checks.destination,
      print(length(todo))
      print(head(todo,50))
      tryall = bplapply(paste0(sources.folder, "/", shuffle(todo)), function(x) {
+     pkgbuild::check_build_tools(debug = TRUE)
      rcc_process_package_path(x, checks.destination=checks.destination) 
      bcc_process_package_path(x, bcchecks.destination=bcchecks.destination, bcobj.destination=bcobj.destination) 
           NULL
