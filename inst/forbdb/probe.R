@@ -20,7 +20,10 @@ available_types = c("build_summary.csv.gz",
    "info.csv.gz", "propagation_status.csv.gz", 
    "report.tgz")
 
+# probe into a file for information
+
 probe_file = function(key, con) {
+  Sys.sleep(1)
   pa = sprintf('s3://bioc-builddb-mirror/%s', key)
   sqlstring = sprintf("FROM read_csv('%s')", pa)
   tmp = con |>
@@ -79,13 +82,16 @@ ui = fluidPage(
  sidebarLayout(
   sidebarPanel(
    helpText("probe BiocBuildDB bucket contents"),
-   dateInput("date", "date", min="2024-02-29", max="2024-03-13")
+   dateInput("date", "date", min="2024-02-29", max="2024-03-13", value="2024-03-07"),
+   radioButtons("mode", "mode", choices=c("info",
+         "propagation", "build_summary"), selected="info"),
+   uiOutput("boxes")
    ),
   mainPanel(
    tabsetPanel(
     tabPanel("main",
-     verbatimTextOutput("thedate")
-    ),
+     verbatimTextOutput("thedate"),
+     DT::dataTableOutput("pick")),
     tabPanel("sel", DT::dataTableOutput("selbydate"))
    )
   )
@@ -93,10 +99,35 @@ ui = fluidPage(
 )
 
 server = function(input, output) {
+ gettab = reactive({
+    validate(need(!is.null(input$date), "pick a date"))
+    tmp = bb[ intersect(which(bb$repdate == as.Date(input$date)),
+            grep(input$mode, bb$type)), ]
+    tks = make.names(paste(tmp$type, tmp$repdate, sep=":"), unique=TRUE)
+    rownames(tmp) = tks
+    tmp
+    })
+ output$pick = DT::renderDataTable({
+    print(input$tabs)
+    tmp = gettab()
+    validate(need(nchar(input$tabs)>0, "waiting for tab"))
+    kk = tmp[input$tabs, "Key"]
+    print(kk)
+    validate(need(nchar(kk)>0,"getting key"))
+    ans = probe_file(kk, con)
+    print(ans)
+    ans$head
+    })
+  
  output$thedate = renderText( as.character(as.Date(input$date)) )
  output$selbydate = DT::renderDataTable({
-    print(dim(bb))
-    bb[ which(bb$repdate == as.Date(input$date)), ]
+    tmp = gettab()
+    tmp[, c("type", "repdate")]
+    })
+ output$boxes = renderUI({
+    tmp = gettab()
+    rn = rownames(tmp)
+    radioButtons("tabs", "tabs", choices=rn, selected=rn[1])
     })
 }
 
